@@ -12,3 +12,6 @@ How to road the ipynb?
 => 2. open cmd & typing "jupyter notebook"
 
 => 3. Use the Gui! Click to Open Downded .ipynb files
+
+https://wikidocs.net/book/2155
+여기에 나온 실습환경 및 프레임 워크 라이브러리 설치
