@@ -1,20 +1,24 @@
+
 from collections import Counter
 import re
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-f = open("dataM.txt")
-data = f.read()
-parse = re.sub("[^0-9a-zA-Z\\s]", "", data) # 특수문자 제거
+import codecs
+utf8_f = codecs.open("dataM.txt", 'r', encoding = 'utf-8')
+
+data = utf8_f.read()
+parse = re.sub("[^0-9a-zA-Z\\s]+[^ ㄱ - ㅣ 가-힣]", "", data) # 특수문자 제거
 parse = parse.lower().split()
 
 counts = Counter(parse)
 counts = counts.most_common()
 
 # 이 부분 한글 인코딩 안되므로 인코딩 해결 시 처리
-# boundmorpheme = ["은", "는", "이", "가", "을", "를", "로써", "에서", "에게서", "부터", "까지", "에게", "한테", "께", "와", "과", "의", "로서", "으로서", "로", "으로"] # 조사
+boundmorpheme = ["은", "는", "이", "가", "을", "를", "로써", "에서", "에게서", "부터", "까지", "에게", "한테", "께", "와", "과", "의", "로서", "으로서", "로", "으로"] # 조사
+# 인코딩이랑 한글 형태소 분할해서 자료조사좀 하자
 
-boundmorpheme = ["a", "the", "an", "for", "and" , "nor", "but", "or", "yey", "so","i", "we", "me", "us", "some", "how", "just"]
+#boundmorpheme = ["a", "the", "an", "for", "and" , "nor", "but", "or", "yey", "so", "i", "we", "me", "us", "some", "how", "just"]
 
 exceptions = boundmorpheme
 
