@@ -17,4 +17,5 @@ https://wikidocs.net/book/2155
 여기에 나온 실습환경 및 프레임 워크 라이브러리 설치
 
 툴 : 아나콘다 3.x 
+
 라이브러리 : nltk, ntlk data, KoNLpy, JPype, Tesorflow, Keras, Numpy, Scikit-learn, Juypyter Notebook, Pandas, Matplotlib, 
