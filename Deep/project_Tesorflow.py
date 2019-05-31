@@ -2,10 +2,14 @@
 from collections import Counter
 import re
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 import pandas as pd
 import numpy as np
 import codecs
-utf8_f = codecs.open("dataM.txt", 'r', encoding = 'utf-8')
+
+
+
+utf8_f = codecs.open("dataM.txt", 'r', encoding = 'ISO-8859-1')
 
 data = utf8_f.read()
 parse = re.sub("[^0-9a-zA-Z\\s]+[^ ㄱ - ㅣ 가-힣]", "", data) # 특수문자 제거
@@ -42,6 +46,9 @@ new_to_frame["Per"] = np.array(per2)
 
 print(new_to_frame)
 print("""예외된 단어 30개 :""", new_to_frame[:30])
+
+#한글 깨짐 오류 해결 - 폰트 재정의
+plt.rcParams["font.family"] = 'NanumBarunGothic'
 
 # 예외 단어 30개
 fword = [newcount[i][0] for i in range(len(newcount))][:30]
@@ -88,3 +95,4 @@ plt.ylabel("Counts")
 plt.xticks([i + 0.5 for i, _ in enumerate (num)], num, rotation = 90)
 plt.title("단어 계산")
 plt.show()
+
