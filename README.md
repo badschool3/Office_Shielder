@@ -13,9 +13,11 @@ How to road the ipynb?
 
 => 3. Use the Gui! Click to Open Downded .ipynb files
 
-파이썬 : Python3.x
+파이썬 : Python3.7
 
-툴 : 아나콘다 3.x 
+툴 : 아나콘다 3.7
+
+참고 : https://wikidocs.net/22488
 
 라이브러리
 nltk, ntlk data, KoNLpy, JPype, Tensorflow, Keras, Numpy, Scikit-learn, Juypyter Notebook, Pandas, Matplotlib, Twitter -> Okt 로 변경
