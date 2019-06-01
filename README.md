@@ -21,3 +21,5 @@ How to road the ipynb?
 
 라이브러리
 nltk, ntlk data, KoNLpy, JPype, Tensorflow, Keras, Numpy, Scikit-learn, Juypyter Notebook, Pandas, Matplotlib, Twitter -> Okt 로 변경
+
+깃허브 되는지 테스트...1
