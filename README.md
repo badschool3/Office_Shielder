@@ -17,4 +17,5 @@ How to road the ipynb?
 
 툴 : 아나콘다 3.x 
 
-라이브러리 : nltk, ntlk data, KoNLpy, JPype, Tensorflow, Keras, Numpy, Scikit-learn, Juypyter Notebook, Pandas, Matplotlib, 
+라이브러리
+nltk, ntlk data, KoNLpy, JPype, Tensorflow, Keras, Numpy, Scikit-learn, Juypyter Notebook, Pandas, Matplotlib, Twitter -> Okt 로 변경
