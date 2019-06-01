@@ -1,8 +1,8 @@
 from konlpy.tag import Okt
-import urllib.request
 
-import os, re, json, random
+import json, random
 from pprint import pprint
+
 
 # 마르코프 체인 딕셔너리
 
@@ -13,11 +13,13 @@ def make_dic(words):
     for word in words:
         tmp.append(word)
 
-        if len(word) < 3: continue
-        if len(word) > 3: tmp = tmp[1:]
+        if len(tmp) < 3: continue
+        if len(tmp) > 3: tmp = tmp[1:]
 
-        set_word3(dic, tmp)
-
+        try:
+            set_word3(dic, tmp)
+        except:
+            pass
         if word == ".":
             tmp = ["@"]
             continue
@@ -58,21 +60,21 @@ def make_sentence(dic):
     return ret
 
 def word_choice(sel):
-    keys = sel.key()
+    keys = sel.keys()
     return random.choice(list(keys))
 
 if __name__ == '__main__':
-    dict_file = "markov-toji.json"
+    dict_file = "markov-chain.json"
 
-    sentence  = "오늘 티켓팅 발매 시간은 20:00 입니다. 우리 같이 성공해봐요!! BTS 파이팅."
+    sentence = """오늘 콘서트 티켓팅 발매 시작! 우리 꼭 모두 성공해봐요."""
 
     twitter = Okt()
     malist = twitter.pos(sentence, norm=True)
     words = []
 
-    words = []
+
     for word in malist:
-        if not word[1] in ["punctuation"]:
+        if not word[1] in ["Punctuation"]:
             words.append(word[0])
         if word[0] == '.':
             words.append(word[0])
