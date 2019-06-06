@@ -61,6 +61,7 @@ with open('train_docs.json', 'w', encoding="utf-8") as make_file:
 with open("train_docs.json",encoding='UTF-8') as json_file:
     json_data2 = json.load(json_file)
 
+## 더 작성되어야 할 
 
 #크롤링 분석 완료
 user_profile = [names]
