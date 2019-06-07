@@ -4,7 +4,6 @@ import datetime
 import time
 from config import *
 
-ptr = 903
 names = "Johnber112" #df['user_screen_name'][ptr]
 
 #[CODE 1]
