@@ -1,3 +1,8 @@
+""" 파일 순서 - 2 - 
+가져온 파일을 기반으로 개인정보가 저장될 1차 데이터프레임을 생성하고 
+주요 활동 시간을 파악해 저장합니다. """
+
+
 from personal_json import *
 from pprint import pprint
 import pandas as pd
@@ -21,9 +26,6 @@ main()
 with open(names+"_twitter.json",encoding='UTF-8') as json_file:
     json_data = json.load(json_file)
 from pprint import pprint
-'''pprint(len(json_data))
-print("\n")
-pprint(json_data)'''
 
 #개인 정보 데이터 셋 저장 
 personal_list = [names for x in range(len(json_data))] 
@@ -44,16 +46,3 @@ key_max = max(result.keys(), key=f1)
 
 #빈도수 바탕 주제 분석 - 형태소 분리
 arr2 = list(personal_set["user_message"])
-#pprint(arr2)
-
-okt = Okt()
-def tokenize(doc):
-     return ['/'.join(t) for t in okt.pos(doc, norm=True, stem=True)]
-
-'''
-f = open("train_docs.txt","r",encoding='utf-8')
-while True:
-	line = f.readline()
-	#pprint(line)
-	if not line: break
-f.close()'''
