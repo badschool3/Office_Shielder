@@ -1,6 +1,11 @@
+""" 파일 순서 - 3 - 
+주요 활동 시간을 정했다면 다음에 필요한 것은 해당 유저가 관심있어하는 
+관심사를 가지고 공격할 주제를 만드는 것입니다. 
+관심사는 글의 특정 단어 빈도수로 측정합니다."""
+
+
 from personal_data import *
 import numpy as np
-import codecs
 import re
 
 #데이터 가져오기
