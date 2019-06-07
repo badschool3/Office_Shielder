@@ -1,6 +1,4 @@
 from personal_json import *
-#from personal_feeling import *
-
 from pprint import pprint
 import pandas as pd
 from collections import Counter
@@ -9,7 +7,7 @@ import matplotlib.pyplot as plt
 import os
 from konlpy.tag import *
 
-#matplotlib 그래프 한글 깨짐 방지. 폰트 설정.
+#matplotlib 그래프 한글 깨짐 방지. 폰트 설정
 font_fname = 'C:/Windows/Fonts/NanumGothic.ttf'
 font_family = fm.FontProperties(fname=font_fname).get_name()
 plt.rcParams["font.family"] = font_family
@@ -52,24 +50,10 @@ okt = Okt()
 def tokenize(doc):
      return ['/'.join(t) for t in okt.pos(doc, norm=True, stem=True)]
 
-train_docs = [(tokenize(arr2[x])) for x in range(len(arr2)-1)]
-#pprint(train_docs)
-
-#빈도수 바탕 주제 분석 - 감정 분석
-with open('train_docs.json', 'w', encoding="utf-8") as make_file:
-    json.dump(train_docs, make_file, ensure_ascii=False, indent="\t")
-with open("train_docs.json",encoding='UTF-8') as json_file:
-    json_data2 = json.load(json_file)
-
-## 더 작성되어야 할 
-
-#크롤링 분석 완료
-user_profile = [names]
-user_profile = pd.DataFrame(user_profile, columns=["id"])
-
-user_profile["time"] = str(key_max)
-user_profile["user_topic"] = 0
-user_profile['emotion'] = 0
-
-pprint(user_profile)
-print("%s님이 주로 활동하는 시각은 %d시 입니다"%(names, key_max))
+'''
+f = open("train_docs.txt","r",encoding='utf-8')
+while True:
+	line = f.readline()
+	#pprint(line)
+	if not line: break
+f.close()'''
