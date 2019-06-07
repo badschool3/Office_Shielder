@@ -1,10 +1,14 @@
+""" 파일 순서 - 1 - 
+특정한 아이디에 대한 정보를 가져와(크롤링해) json 파일로 저장합니다. """
+
+
 import oauth2
 import json
 import datetime
 import time
 from config import *
 
-names = "Johnber112" #df['user_screen_name'][ptr]
+names = "Johnber112"
 
 #[CODE 1]
 def oauth2_request(consumer_key, consumer_secret, access_token, access_secret):
@@ -22,7 +26,6 @@ def get_user_timeline(client, screen_name, count=50, include_rts='False'):
     base = "https://api.twitter.com/1.1"
     node = "/statuses/user_timeline.json"
     fields = "?screen_name=%s&count=%s&include_rts=%s" % (screen_name, count, include_rts)
-    #fields = "?screen_name=%s" % (screen_name)
 
     url = base + node + fields
 
