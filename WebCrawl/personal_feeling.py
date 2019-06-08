@@ -19,13 +19,13 @@ f.close()
 emot = ''
 
 list_tag = [u'NNG', u'VV', u'VA', u'VXV', u'UN']
-kkma = Kkma()
+okt = Okt()
 
 #make lists
 def getting_list(filename, listname):
     while 1:
         line = filename.readline()
-        line_parse = kkma.pos(line)
+        line_parse = okt.pos(line)
         for i in line_parse:
             if i[1] == u'SW':
                 if i[0] in [u'♡', u'♥']:
@@ -71,7 +71,7 @@ def mainfeel():
      
     # extract test sentence
     test_line = f_test.readline()   
-    test_list = kkma.pos(test_line)
+    test_list = okt.pos(test_line)
     test_output=[]
     for i in test_list:
         if (i[1] == u'SW'):
