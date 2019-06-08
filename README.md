@@ -1,4 +1,4 @@
-# SPST_S
+# 노는게좋아 스피어피싱 모의훈련 서비스 SPST_S
 #Spear phishing simulation training_
 
 What is .ipynb file?
