@@ -29,6 +29,6 @@ print("%s님이 주제에 대해 주로 나타내는 성향은 %s입니다."%(na
 
 plt.bar(fxs, fnumber)
 plt.ylabel("단어 수")
-plt.title("단어 계산 (예외)")
+plt.title("단어 계산")
 plt.xticks([i + 0.5 for i, _ in enumerate(fword)], fword, rotation = 90)
 plt.show()
