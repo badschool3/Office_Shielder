@@ -1,5 +1,5 @@
 from konlpy.tag import Okt
-import os,json
+import os, json
 from project_MarkovChain import *
 
 from Deep.project_MarkovChain import word_choice, set_word3
@@ -54,6 +54,7 @@ def make_sentence(head):
     return ret
 
 def make_reply(text):
+
     # 단어 학습
     if not text[-1] in [".", "?"]: text += "."
     words = okt.pos(text)
@@ -66,10 +67,11 @@ def make_reply(text):
     return make_sentence("@")
 
 
+
 if os.path.exists(dict_file):
     dic = json.load(open(dict_file, "r"))
 
 if __name__ == "__main__":
-    message = "콘서트 티켓"
+    message = ""
     new_message = make_reply(message)
     print("%s : %s" %(message, new_message))

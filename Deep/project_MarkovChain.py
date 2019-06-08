@@ -55,7 +55,7 @@ def make_sentence(dic):
         ret.append(w3)
         if w3 == ".": break
         w1, w2 = w2, w3
-    ret = "".join(ret)
+    ret = " ".join(ret)
 
     return ret
 
