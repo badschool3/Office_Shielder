@@ -7,6 +7,9 @@
 from personal_data import *
 import numpy as np
 import re
+from soynlp.tokenizer import MaxScoreTokenizer
+scores = {'티켓이': 0.3, '티켓': 0.7, '좋아요': 0.2, '좋아':0.5}
+tokenizer = MaxScoreTokenizer(scores=scores)
 
 #데이터 가져오기
 data = ""
@@ -20,12 +23,24 @@ parse = parse.lower().split()
 #print(parse)
 for x in range(len(parse)):
 	parse[x] = re.sub("[^ ㄱ - ㅣ 가-힣]+","",parse[x])
+	
+	try:
+		ay = tokenizer.tokenize(parse[x])
+		parse[x] = ay
+	except:
+		parse[x] = re.sub("[^ ㄱ - ㅣ 가-힣]+","",parse[x]) 
 
 boundmorpheme = ["은", "는", "이", "가", "을", "를", "로써", "에서", "에게서", "부터", "까지", "에게", "한테", "께", "와", "과", "의", "로서", "으로서", "로", "으로"] # 조사
 exceptions = boundmorpheme
 
+parses = []
+for x in range(len(parse)):
+	try:
+		parses.append(parse[x][0])
+	except:
+		continue
 #표현
-counts = Counter(parse)
+counts = Counter(parses)
 counts = counts.most_common()
 length = len(counts)
 newcount = []
@@ -45,19 +60,17 @@ per2 = [(new_to_frame["Counts"][i]/countsum2) * 100 \
         for i in range(len(new_to_frame))]
 new_to_frame["Per"] = np.array(per2)
 
-#print("""단어 30개:""", counts_to_frame[:30])
-
 pointlist = []
 fword = [newcount[i][0] for i in range(len(newcount))][:30]
 fnumber = [newcount[i][1] for i in range(len(newcount))][:30]
 
-reduceword = ['뉴콘']
+print(fword[0])
+reduceword = ['뉴콘','티켓']
 for x in reduceword:
 	if(fword[1] == x):
 		pointword = '콘서트'
 	else:
-		pointword = fword[1]
+		pointword = fword[0]
 pointlist.append(pointword)
 pointlist.append(fnumber[0])
-#print(pointword, fnumber[0])
 fxs = [i for i, _ in enumerate(fword)]
