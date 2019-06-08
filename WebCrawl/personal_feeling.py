@@ -102,6 +102,11 @@ def mainfeel():
         #print ('중립')
         emot = 'nat'
      
+    '''
+    pprint(result_pos)
+    pprint(result_neg)
+    pprint(result_neu)'''
+
     f_pos.close()
     f_neg.close()
     f_neu.close()
