@@ -24,7 +24,7 @@ user_profile['emotion'] = emot
 
 pprint(user_profile)
 print("%s님이 매체를 주로 활동하는 시각은 %d시 입니다."%(names, key_max))
-print("%s님이 관심을 가질 주제로는 본문에서 %s번 빈도가 나타난 %s가 있습니다."%(names, pointlist[1], pointlist[0]))
+print("%s님이 관심을 가질 주제로는 본문에서 %s은(는) %s번 빈도가 나타났습니다."%(names, pointlist[0], pointlist[1]))
 print("%s님이 주제에 대해 주로 나타내는 성향은 %s입니다."%(names, emots))
 
 plt.bar(fxs, fnumber)
