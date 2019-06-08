@@ -64,10 +64,9 @@ pointlist = []
 fword = [newcount[i][0] for i in range(len(newcount))][:30]
 fnumber = [newcount[i][1] for i in range(len(newcount))][:30]
 
-print(fword[0])
-reduceword = ['뉴콘','티켓']
+reduceword = ['뉴콘']
 for x in reduceword:
-	if(fword[1] == x):
+	if(fword[0] == x):
 		pointword = '콘서트'
 	else:
 		pointword = fword[0]
