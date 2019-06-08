@@ -1,5 +1,6 @@
 <h1>노는게좋아 SPST_S</h1>
 <h3>스피어피싱 모의훈련 서비스</h3>
+<h6>팀 : 노는게좋아 </h6>
 #Spear phishing simulation training_
 
 What is .ipynb file?
