@@ -4,6 +4,7 @@
 <h5>주제 : 스피어피싱 모의훈련 서비스</h5>
 <h5>Spear phishing simulation training_Service</h5>
 
+<h1>Anaconda</h1>
 What is .ipynb file?
 => anaconda's jupyter notebook file
 How to load the ipynb?
