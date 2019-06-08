@@ -11,11 +11,29 @@ from soynlp.tokenizer import MaxScoreTokenizer
 scores = {'티켓이': 0.3, '티켓': 0.7, '좋아요': 0.2, '좋아':0.5}
 tokenizer = MaxScoreTokenizer(scores=scores)
 
+def isHangul(text):
+    #Check the Python Version
+    pyVer3 =  sys.version_info >= (3, 0)
+
+    if pyVer3 : # for Ver 3 or later
+        encText = text
+    else: # for Ver 2.x
+        if type(text) is not unicode:
+            encText = text.decode('utf-8')
+        else:
+            encText = text
+
+    hanCount = len(re.findall(u'[\u3130-\u318F\uAC00-\uD7A3]+', encText))
+    return hanCount > 0
+
+iH = 0
+
 #데이터 가져오기
 data = ""
 for x in range(len(arr2)):
 	data += arr2[x]
-#pprint(data)
+	iH = isHangul(data)
+pprint(iH)
 
 #데이터 정제
 parse = re.sub("[^0-9a-zA-Z\\s]+[^ ㄱ - ㅣ 가-힣]", "", data)
@@ -64,12 +82,17 @@ pointlist = []
 fword = [newcount[i][0] for i in range(len(newcount))][:30]
 fnumber = [newcount[i][1] for i in range(len(newcount))][:30]
 
-reduceword = ['뉴콘']
-for x in reduceword:
-	if(fword[0] == x):
-		pointword = '콘서트'
-	else:
-		pointword = fword[0]
-pointlist.append(pointword)
-pointlist.append(fnumber[0])
+if iH:
+	reduceword = ['뉴콘']
+	for x in reduceword:
+		if(fword[0] == x):
+			pointword = '콘서트'
+		else:
+			pointword = fword[0]
+	pointlist.append(pointword)
+	pointlist.append(fnumber[0])
+else:
+	pointlist.append("한글 아님")
+	pointlist.append("None")
+	fword.append("None")
 fxs = [i for i, _ in enumerate(fword)]
