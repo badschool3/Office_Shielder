@@ -55,7 +55,6 @@ def more(text1,text2,text3):
         conf.commit()
         userset = pd.read_sql("SELECT * FROM user_info",conf)
         cols = list(userset)
-        messagebox.showinfo(title="Commit Complete", message="Restart the program to see the results")
     f.close()
 
 #결과 불러오기
