@@ -26,4 +26,4 @@ How to load the ipynb?
 - time, oauth2, json, datetime, config, sqlite3, tweepy
 
 - nltk, ntlk data, KoNLpy, JPype, Tensorflow, Keras, Numpy, Scikit-learn, Juypyter Notebook, Pandas, Matplotlib, Okt
-깃허브 되는지 테스트...1
+
