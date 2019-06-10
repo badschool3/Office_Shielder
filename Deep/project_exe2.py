@@ -1,5 +1,6 @@
 #필요 라이브러리 및 파일 호출
 from project_Response import *
+#from WebCrawl.personal_profile import *
 from tkinter import *
 import tkinter.ttk
 from tkinter import messagebox
@@ -8,18 +9,18 @@ import pymysql
 import pandas as pd
 import os
 
-#데이터베이스 연결. 참고 url = https://estenpark.tistory.com/349
 length = 5
 pathvar = os.path.dirname( os.path.abspath( __file__ ) ).split('\\')[2]
 
+#데이터베이스 연결. 참고 url = https://estenpark.tistory.com/349
+'''
 db = pymysql.connect(host='106.10.36.206',port=27000,user='root',passwd='qwertyadmin',db='SPST_S',charset='utf8',autocommit=True)
 cursor = db.cursor()
 userset = pd.read_sql("SELECT * FROM user_info")
 cols = list(userset)
-print(userset)
+print(userset) '''
 
 #데이터베이스 생성
-'''
 if os.path.isfile("C:/Users/"+ pathvar + "/Users.db"):
   print ("해당 파일이 있습니다. 데이터베이스를 불러옵니다.")
   conf = sqlite3.connect("C:/Users/"+ pathvar + "/Users.db")
@@ -27,7 +28,6 @@ if os.path.isfile("C:/Users/"+ pathvar + "/Users.db"):
   userset = pd.read_sql("SELECT * FROM user_info",conf)
   cols = list(userset)
   print (userset)
-
 else:
   print ("그런 이름의 파일은 없습니다. 새 데이터베이스를 생성합니다.")
   conf = sqlite3.connect("C:/Users/"+ pathvar + "/Users.db")
@@ -35,7 +35,8 @@ else:
   cursor.execute('create table user_info(id, name, address)')
   cursor.execute('create table user_analysis(id, active_time, subject, emotion)')
   userset = pd.read_sql("SELECT * FROM user_info",conf)
-  cols = list(userset) '''
+  cols = list(userset)
+
 
 ids = userset["id"].tolist()
 nas = userset["name"].tolist()
@@ -53,7 +54,7 @@ def more(text1,text2,text3):
     f.write(text2+"\n")
     f.write(text3+"\n")
 
-    text1 = text1.replace(" ","")
+    text1 = text1.replace(" ","") #공백은 결과 저장 버튼을 눌러도 저장되지 않습니다.
     text2 = text2.replace(" ","")
     text3 = text3.replace(" ","")
 
@@ -71,6 +72,11 @@ def grep():
     open_file = open(f, 'r')
     print(open_file.read())
     open_file.close()
+
+#실수 종료 방지
+def on_closing():
+    if messagebox.askokcancel("Quit", "Do you want to quit?"): 
+        root.destroy()
 
 #사원 테이블 호출
 def my_table(self):
@@ -112,15 +118,6 @@ class MyFrame(Frame):
         frame4.pack(fill=X)
         btnSave = Button(frame4, text="사원 추가",command=lambda:more(entryId.get(),entryName.get(),entryDepart.get()))
         btnSave.pack(side=LEFT, padx=10, pady=10)
-
-#분석 관리
-def analysis_manage():
-    messagebox.showinfo(title='Deep Learning', message=show_newMessage())
-
-#실수 종료 방지
-def on_closing():
-    if messagebox.askokcancel("Quit", "Do you want to quit?"): 
-        root.destroy()
 
 #사원 관리 메인
 def employee_manage():
@@ -170,6 +167,66 @@ def employee_manage():
     app = MyFrame(emplo)
     emplo.mainloop()
 
+def analy_result():
+    messagebox.showinfo(title='Deep Learning', message=show_newMessage())
+
+#분석 관리
+class MyFrames(Frame):
+    def __init__(self, master):
+        Frame.__init__(self, master)
+        self.master = master
+        self.pack(fill=BOTH, expand=True)
+
+        #id
+        frame1 = Frame(self)
+        frame1.pack(fill=X)
+        lblId = Label(frame1, text ="아이디",width=10)
+        lblId.pack(side=LEFT,padx=10,pady=10)
+        entryId = Entry(frame1)
+        entryId.pack(fill=X, padx=10, expand=True)
+
+        #성명
+        frame2 = Frame(self)
+        frame2.pack(fill=X)
+        lblName = Label(frame2, text ="성명",width=10)
+        lblName.pack(side=LEFT,padx=10,pady=10)
+        entryName = Entry(frame2)
+        entryName.pack(fill=X, padx=10, expand=True)
+
+        #부서
+        frame3 = Frame(self)
+        frame3.pack(fill=X)
+        lblDepart = Label(frame3, text ="부서",width=10)
+        lblDepart.pack(side=LEFT,padx=10,pady=10)
+        entryDepart = Entry(frame3)
+        entryDepart.pack(fill=X, padx=10, expand=True)
+
+        #저장
+        frame4 = Frame(self)
+        frame4.pack(fill=X)
+        btnSave = Button(frame4, text="분석 결과",command=analy_result)
+        btnSave.pack(side=LEFT, padx=10, pady=10)
+
+#분석 관리 메인
+def analysis_manage():
+    global x0, y0, cols, ids, nas, ads
+    analys = Toplevel(root)
+    analys.title("분석 관리")
+    width3,height3 = x0,y0
+    screen3_wid = root.winfo_screenwidth()
+    screen3_hei = root.winfo_screenheight()
+    x3 = ((screen3_wid/2) - (width3/2))
+    y3 = (screen3_hei/2) - (height3/2)
+    analys.geometry('%dx%d+%d+%d' % (width3, height3, x3, y3))
+
+    e_lbl = Label(analys,text="분석 관리 테이블")
+    e_lbl.pack()
+    e_but = Label(analys,text="My_Table")
+    e_lbl.pack()
+
+    app = MyFrames(analys)
+    analys.mainloop()
+
 #메인 화면
 def center_window(width=300, height=200):
     # get screen width and height
@@ -180,7 +237,6 @@ def center_window(width=300, height=200):
     x = (screen_width/2) - (width/2)
     y = (screen_height/2) - (height/2)
     root.geometry('%dx%d+%d+%d' % (width, height, x, y))
-
 
 root = Tk()
 x0, y0 = 800, 450
@@ -198,5 +254,5 @@ btn.place(x=700, y = 380)
 
 Button(root, text="종  료", command=on_closing).place(x=30, y = 380)
 
-root.protocol("WM_DELETE_WINDOW", on_closing) 
+root.protocol("WM_DELETE_WINDOW", on_closing)
 root.mainloop()
