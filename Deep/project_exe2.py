@@ -4,14 +4,22 @@ from tkinter import *
 import tkinter.ttk
 from tkinter import messagebox
 import sqlite3
+import pymysql
 import pandas as pd
 import os
 
-#데이터베이스 생성
+#데이터베이스 연결. 참고 url = https://estenpark.tistory.com/349
 length = 5
 pathvar = os.path.dirname( os.path.abspath( __file__ ) ).split('\\')[2]
-userindex = [1]
 
+db = pymysql.connect(host='106.10.36.206',port=27000,user='root',passwd='qwertyadmin',db='SPST_S',charset='utf8',autocommit=True)
+cursor = db.cursor()
+userset = pd.read_sql("SELECT * FROM user_info")
+cols = list(userset)
+print(userset)
+
+#데이터베이스 생성
+'''
 if os.path.isfile("C:/Users/"+ pathvar + "/Users.db"):
   print ("해당 파일이 있습니다. 데이터베이스를 불러옵니다.")
   conf = sqlite3.connect("C:/Users/"+ pathvar + "/Users.db")
@@ -27,7 +35,7 @@ else:
   cursor.execute('create table user_info(id, name, address)')
   cursor.execute('create table user_analysis(id, active_time, subject, emotion)')
   userset = pd.read_sql("SELECT * FROM user_info",conf)
-  cols = list(userset)
+  cols = list(userset) '''
 
 ids = userset["id"].tolist()
 nas = userset["name"].tolist()
