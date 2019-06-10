@@ -1,121 +1,102 @@
-""" 파일 순서 - 1 - 
-특정한 아이디에 대한 정보를 가져와(크롤링해) json 파일로 저장합니다. """
+""" 파일 순서 - 3 - 
+주요 활동 시간을 정했다면 다음에 필요한 것은 해당 유저가 관심있어하는 
+관심사를 가지고 공격할 주제를 만드는 것입니다. 
+관심사는 글의 특정 단어 빈도수로 측정합니다."""
 
 
-import oauth2
-import pandas as pd
-import json
-import datetime
-import time
-from config import *
-import sqlite3
-import sys
+from personal_data import *
+import numpy as np
+import re
+from soynlp.tokenizer import MaxScoreTokenizer
 
-'''
-ptr = 110
-con = sqlite3.connect("C:/Users/dsz08/kospi.db")
-df = pd.read_sql("SELECT * FROM crawli"+str(1),con,index_col=None) '''
-names =  "Johnber112" #df['user_screen_name'][ptr]
+boundmorpheme = ["은", "는", "이", "가", "을", "를", "로써", "에서", "에게서", "부터", "까지", "에게", "한테", "께", "와", "과", "의", "로서", "으로서", "로", "으로"] # 조사
+exceptions = boundmorpheme
 
-#[CODE 1]
-def oauth2_request(consumer_key, consumer_secret, access_token, access_secret):
-    try:
-        consumer = oauth2.Consumer(key=consumer_key, secret=consumer_secret)
-        token = oauth2.Token(key=access_token, secret=access_secret)
-        client = oauth2.Client(consumer, token)
-        return client
-    except Exception as e:
-        print(e)
-        return None
+scores = {'티켓이': 0.3, '티켓': 0.7, '좋아요': 0.2, '좋아':0.5}
+tokenizer = MaxScoreTokenizer(scores=scores)
 
-#[CODE 2]
-def get_user_timeline(client, screen_name, count=50, include_rts='False'):
-    base = "https://api.twitter.com/1.1"
-    node = "/statuses/user_timeline.json"
-    fields = "?screen_name=%s&count=%s&include_rts=%s" % (screen_name, count, include_rts)
+def isHangul(text):
+    #Check the Python Version
+    pyVer3 =  sys.version_info >= (3, 0)
 
-    url = base + node + fields
+    if pyVer3 : # for Ver 3 or later
+        encText = text
+    else: # for Ver 2.x
+        if type(text) is not unicode:
+            encText = text.decode('utf-8')
+        else:
+            encText = text
 
-    response, data = client.request(url)
+    hanCount = len(re.findall(u'[\u3130-\u318F\uAC00-\uD7A3]+', encText))
+    return hanCount > 0
 
-    try:
-        if response['status'] == '200':
-            return json.loads(data.decode('utf-8'))
-    except Exception as e:
-        print(e)
-        return None
+iH = 0
 
-#[CODE 3]
-def getTwitterTwit(tweet, jsonResult):
+#데이터 가져오기
+data = ""
+for x in range(len(arr2)):
+	data += arr2[x]
+	iH = isHangul(data)
+pprint(iH)
 
-    tweet_id = tweet['id_str']
-    tweet_message = '' if 'text' not in tweet.keys() else tweet['text']
+#데이터 정제
+parse = re.sub("[^0-9a-zA-Z\\s]+[^ ㄱ - ㅣ 가-힣]", "", data)
+parse = parse.lower().split()
+#print(parse)
+for x in range(len(parse)):
+	parse[x] = re.sub("[^ ㄱ - ㅣ 가-힣]+","",parse[x])
+	
+	try:
+		ay = tokenizer.tokenize(parse[x])
+		if(ay == boundmorpheme):
+			pasrs[x] = ""
+		else:
+			parse[x] = ay
+	except:
+		parse[x] = re.sub("[^ ㄱ - ㅣ 가-힣]+","",parse[x]) 
+		
+parses = []
+for x in range(len(parse)):
+	try:
+		parses.append(parse[x][0])
+	except:
+		continue
+#표현
+counts = Counter(parses)
+counts = counts.most_common()
+length = len(counts)
+newcount = []
+for i in range(length):
+    if counts[i][0] not in exceptions:
+        newcount.append(counts[i])
 
-    screen_name = '' if 'user' not in tweet.keys() else tweet['user']['screen_name']
+counts_to_frame = pd.DataFrame(counts, columns = ["Word", "Counts"])
+countsum1 = sum(counts_to_frame["Counts"])
+per1 = [(counts_to_frame["Counts"][i]/countsum1) * 100 \
+        for i in range(len(counts_to_frame))]
+counts_to_frame["Per"] = np.array(per1)
 
-    tweet_link = ''
-    if tweet['entities']['urls']: #list
+new_to_frame = pd.DataFrame(newcount, columns = ["Word", "Counts"])
+countsum2 = sum(new_to_frame["Counts"])
+per2 = [(new_to_frame["Counts"][i]/countsum2) * 100 \
+        for i in range(len(new_to_frame))]
+new_to_frame["Per"] = np.array(per2)
 
-        for i, val in enumerate(tweet['entities']['urls']):
-            tweet_link = tweet_link + tweet['entities']['urls'][i]['url'] + ' '
-    else:
-        tweet_link = ''
+pointlist = []
+fword = [newcount[i][0] for i in range(len(newcount))][:30]
+fnumber = [newcount[i][1] for i in range(len(newcount))][:30]
 
-    hashtags = ''
-    if tweet['entities']['hashtags']: #list
-
-        for i, val in enumerate(tweet['entities']['hashtags']):
-            hashtags = hashtags + tweet['entities']['hashtags'][i]['text'] + ' '
-    else:
-        hashtags = ''
-
-    if 'created_at' in tweet.keys():
-        # Twitter used UTC Format. EST = UTC + 9(Korean Time) Format ex: Fri Feb 10 03:57:27 +0000 2017
-
-        tweet_published = datetime.datetime.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y')
-        tweet_published = tweet_published + datetime.timedelta(hours=+9)
-        tweet_published = tweet_published.strftime('%Y-%m-%d %H:%M:%S')
-    else:
-        tweet_published = ''
-
-    num_favorite_count = 0 if 'favorite_count' not in tweet.keys() else tweet['favorite_count']
-    num_comments = 0
-    num_shares = 0 if 'retweet_count' not in tweet.keys() else tweet['retweet_count']
-    num_likes = num_favorite_count
-    num_loves = num_wows = num_hahas = num_sads = num_angrys = 0
-
-    jsonResult.append({'post_id':tweet_id, 'message':tweet_message,
-                    'name':screen_name, 'link':tweet_link,
-                    'created_time':tweet_published, 'num_reactions':num_favorite_count,
-                    'num_comments':num_comments, 'num_shares':num_shares,
-                    'num_likes':num_likes, 'num_loves':num_loves,
-                    'num_wows':num_wows, 'num_hahas':num_hahas,
-                    'num_sads':num_sads, 'num_angrys':num_angrys, 'hashtags': hashtags})
-#main
-def main():
-    global names
-    screen_name = names
-    num_posts = 100
-    jsonResult = []
-
-    ck = "oCfme0qMTyYybPUU0ABwKNHKg"
-    cs = "1VP4phAtG0Y1ILTe5RGL7XYGHkNrWEzzxv8fk0cWym1p9yfNIO"
-    at = "2910321932-RkciOAbw8WYB2nIISDrFSREfbDnxDIydAdX2mLB"
-    asc = "faRZmsdWYWQ8mLdYN40qmj7B5eA0Ifl9RglLohzi8fCqa"
-    
-    client = oauth2_request(ck, cs, at, asc)
-    tweets = get_user_timeline(client, screen_name)
-
-    for tweet in tweets:
-        getTwitterTwit(tweet, jsonResult)
-
-    with open('%s_twitter.json' % (screen_name), 'w', encoding='utf8') as outfile:
-        str_ = json.dumps(jsonResult,
-                      indent=4, sort_keys=True,
-                      ensure_ascii=False)
-        outfile.write(str_)
-
-    print ('%s_twitter.json SAVED' % (screen_name))
-
-if __name__ == '__main__':
-    main()
+if iH:
+	reduceword = ['뉴콘']
+	for x in reduceword:
+		if(fword[0] == x):
+			pointword = '콘서트'
+		else:
+			pointword = fword[0]
+	pointlist.append(pointword)
+	pointlist.append(fnumber[0])
+else:
+	pointlist.append("한글 아님")
+	pointlist.append("None")
+	fword.append("None")
+fxs = [i for i, _ in enumerate(fword)]
