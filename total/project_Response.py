@@ -65,16 +65,5 @@ def make_reply(text):
 
     return make_sentence("@")
 
-
-
 if os.path.exists(dict_file):
     dic = json.load(open(dict_file, "r"))
-
-def show_newMessage():
-    message = "티켓 구하는법"
-    return make_reply(message)
-
-if __name__ == "__main__":
-    message = ""
-    new_message = make_reply(message)
-    print("%s : %s" %(message, new_message))
