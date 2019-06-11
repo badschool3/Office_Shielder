@@ -7,13 +7,15 @@ import pymysql
 import pandas as pd
 import os
 import time
+from PIL import Image
 
 from project_Response import *
 from personal_json import *
 from personal_data import *
 from personal_topic import *
 from feeling_to_data import *
-import personal_profile
+from personal_feeling import *
+from personal_profile import *
 
 pathvar = os.path.dirname( os.path.abspath( __file__ ) ).split('\\')[2]
 
@@ -203,7 +205,9 @@ def interactive(text1):
     def f1(x):
         return resultk[x]
 
-    global userlist, userset
+    userlist = pd.read_sql("SELECT * FROM user_info",conf)
+    userlist = list(userlist["id"])
+
     text1 = text1.replace(" ","")
     if(len(text1) != 0):
         for user in userlist:
@@ -251,18 +255,41 @@ def interactive(text1):
                 pprint(arr2[0])
                 f.write(str(data))
                 f.close()
-                main_feel()
-                user_profile = profiling(text1,key_max,pointlist,iH,fword)
 
+                f_test = open('train_docs.txt','r',encoding='UTF-8')
+                emot = mainfeel(f_test)
+                user_profile = profiling(text1,key_max,pointlist,iH,fword,emot)
                 analy_result(user_profile)
+
+                values = [user_profile["id"][0],user_profile["time"][0],user_profile["user_topic"][0],user_profile["emotion"][0]]
+                cursor.execute("insert into user_analysis values (?,?,?,?)",values)
+                conf.commit()
+                userset = pd.read_sql("SELECT * FROM user_analysis",conf)
+                cols = list(userset)
 
                 #except Exception as ex:
                 #    print("None information",ex)
+    else:
+        messagebox.showinfo(title="Web Crawlling",message="입력 후 버튼을 눌러주세요.")
 
 #훈련 결과
 def analy_result(userdata):
     print(userdata)
-    messagebox.showinfo(title='Deep Learning', message=show_newMessage())
+    print(userdata["user_topic"][0])
+    messagebox.showinfo(title='Deep Learning', message=show_newMessage(userdata["user_topic"][0]))
+
+def show_newMessage(topicdata):
+    changelist = ['콘서트','공연장','스포츠','공연','표','암표','재관','티켓팅']
+    for x in changelist:
+        if(x == topicdata):
+            topicdata = 티켓
+            message = topicdata+" "+"구하는법"
+
+    message = "티켓 구하는법"
+    return make_reply(message)
+
+    message = ""
+    new_message = make_reply(message)
 
 #훈련 관리
 class MyFrames(Frame):
@@ -285,10 +312,10 @@ class MyFrames(Frame):
         entryId = Entry(frame2)
         entryId.pack(fill=X, padx=10, expand=True)
 
-        #분석
+        #훈련
         frame3 = Frame(self)
         frame3.pack(fill=X)
-        btanaly = Button(frame3, text="분석 시작",command=lambda:interactive(entryId.get()))
+        btanaly = Button(frame3, text="훈련 시작",command=lambda:interactive(entryId.get()))
         btanaly.pack(side=RIGHT, padx=10,pady=10)
 
 #훈련 관리 메인
@@ -309,7 +336,6 @@ def analysis_manage():
 
     userset = pd.read_sql("SELECT * FROM user_analysis",conf)
     cols = list(userset)
-    #print(userset)
 
     ids = userset["id"].tolist()
     ats = userset["active_time"].tolist()
@@ -337,8 +363,9 @@ def analysis_manage():
     for x in range(len(ids)):
         treelist = []
         treelist.append(ids[x])
-        treelist.append(nas[x])
-        treelist.append(ads[x])
+        treelist.append(ats[x])
+        treelist.append(sus[x])
+        treelist.append(ems[x])
         treelists.append(tuple(treelist))
 
     for i in range(len(treelists)):
@@ -367,8 +394,12 @@ x0, y0 = 820, 490
 center_window(x0, y0)
 root.title("메인 화면")
 
-lbl = Label(root, text="와! 딥러닝!")
-lbl.place(x=380, y = 180)
+image = Image.open("logo.gif") #창 크기에 맞게 이미지 크기 조절
+resize_image = image.resize((x0,y0))
+resize_image.save('logo.gif')
+images = PhotoImage(file = "logo.gif") #이미지 배치
+lbl = Label(root, image=images)
+lbl.pack(side="bottom",fill="both",expand="True")
 
 btn1 = Button(root, text="사원관리", command=employee_manage)
 btn1.place(x=700, y = 400)
