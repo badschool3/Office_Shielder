@@ -81,9 +81,6 @@ def grep(text1,text2,text3):
         conf.commit()
         userset = pd.read_sql("SELECT * FROM user_info",conf)
         cols = list(userset)
-        emplo.e_but.configure("My_Table" + " " + "Commit!")
-        time.sleep(0.5)
-        e_but.configure("My_Table")
 
 #실수 종료 방지
 def on_closing():
@@ -151,7 +148,7 @@ def employee_manage():
     emplo = Toplevel(root)
     emplo.resizable(0, 0)
     emplo.title("사원 관리")
-    width2,height2 = x0,y0
+    width2,height2 = x0+20,y0+30
     screen2_wid = root.winfo_screenwidth()
     screen2_hei = root.winfo_screenheight()
     x2 = ((screen2_wid/2) - (width2/2))
@@ -198,8 +195,11 @@ def employee_manage():
     emplo.mainloop()
 
 
+user_profile = 0
+
 #분석 시작
 def interactive(text1):
+    global user_profile
     def f1(x):
         return resultk[x]
 
@@ -252,16 +252,18 @@ def interactive(text1):
                 f.write(str(data))
                 f.close()
                 user_profile = profiling(text1,key_max,pointlist,iH,fword)
-                print(user_profile)
+
+                analy_result(user_profile)
 
                 #except Exception as ex:
                 #    print("None information",ex)
 
-#분석 결과
-def analy_result():
+#훈련 결과
+def analy_result(userdata):
+    print(userdata)
     messagebox.showinfo(title='Deep Learning', message=show_newMessage())
 
-#분석 관리
+#훈련 관리
 class MyFrames(Frame):
     def __init__(self, master):
         Frame.__init__(self, master)
@@ -288,19 +290,13 @@ class MyFrames(Frame):
         btanaly = Button(frame3, text="분석 시작",command=lambda:interactive(entryId.get()))
         btanaly.pack(side=RIGHT, padx=10,pady=10)
 
-        #결과
-        frame4 = Frame(self)
-        frame4.pack(fill=X)
-        btnret = Button(frame4, text="분석 결과",command=analy_result)
-        btnret.pack(side=RIGHT, padx=10, pady=10)
-
-#분석 관리 메인
+#훈련 관리 메인
 def analysis_manage():
     global x0, y0
     analys = Toplevel(root)
     analys.resizable(0, 0)
-    analys.title("분석 관리")
-    width3,height3 = x0,y0
+    analys.title("훈련 관리")
+    width3,height3 = x0+20,y0+30
     screen3_wid = root.winfo_screenwidth()
     screen3_hei = root.winfo_screenheight()
     x3 = ((screen3_wid/2) - (width3/2))
@@ -319,7 +315,7 @@ def analysis_manage():
     sus = userset["subject"].tolist()
     ems = userset["emotion"].tolist()
 
-    e_lbl = Label(analys,text="분석 관리 테이블")
+    e_lbl = Label(analys,text="훈련 관리 테이블")
     e_lbl.pack()
     e_but = Label(analys,text="My_Table")
     e_but.pack()
@@ -376,7 +372,7 @@ lbl.place(x=380, y = 180)
 btn1 = Button(root, text="사원관리", command=employee_manage)
 btn1.place(x=700, y = 400)
 
-btn = Button(root, text="분석관리", command=analysis_manage)
+btn = Button(root, text="훈련관리", command=analysis_manage)
 btn.place(x=700, y = 440)
 
 Button(root, text="종   료", command=on_closing).place(x=30, y = 440)
