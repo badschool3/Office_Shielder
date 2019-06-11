@@ -8,14 +8,6 @@
 from feeling_to_data import *
 from personal_data import *
 
-
-#빈도수 바탕 주제 분석 - 감정 분석 밑바탕 파일
-f = open("train_docs.txt","w",encoding='utf-8')
-data = arr2[0]
-pprint(arr2[0])
-f.write(str(data))
-f.close()
-
 emot = ''
 
 list_tag = [u'NNG', u'VV', u'VA', u'VXV', u'UN']
