@@ -13,7 +13,7 @@ from personal_json import *
 from personal_data import *
 from personal_topic import *
 from feeling_to_data import *
-#from personal_profile import *
+from personal_profile import *
 
 pathvar = os.path.dirname( os.path.abspath( __file__ ) ).split('\\')[2]
 
@@ -40,7 +40,7 @@ else:
   conf = sqlite3.connect("C:/Users/"+ pathvar + "/Users.db")
   cursor = conf.cursor() 
   cursor.execute('create table user_info(id, name, address)')
-  cursor.execute('create table user_analysis(id, active_time, subject, emotion)')
+  #cursor.execute('create table user_analysis(id, active_time, subject, emotion)')
   userset = pd.read_sql("SELECT * FROM user_info",conf)
   userlist = pd.read_sql("SELECT * FROM user_info",conf)
   userlist = list(userlist["id"])
@@ -208,51 +208,58 @@ def interactive(text1):
     if(len(text1) != 0):
         for user in userlist:
             if(text1 == user):
-                try:
-                    main(text1)
-                    personal_set = (personal_datas(text1))
-                    #주로 활동하는 시간 파악
-                    arrs = list(personal_set["user_time"])
-                    isarr = [int((((arrs[x].split())[1].split(":"))[0])) for x in range(len(arrs))]
-                    resultk = Counter(isarr)
-                    key_max = max(resultk.keys(), key=f1)
+                #try:
+                main(text1)
+                personal_set = (personal_datas(text1))
+                #주로 활동하는 시간 파악
+                arrs = list(personal_set["user_time"])
+                isarr = [int((((arrs[x].split())[1].split(":"))[0])) for x in range(len(arrs))]
+                resultk = Counter(isarr)
+                key_max = max(resultk.keys(), key=f1)
 
-                    #빈도수 바탕 주제 분석 - 형태소 분리
-                    arr2 = list(personal_set["user_message"])
-                    #print(arr2)
-                    lenarr2 = len(arr2)
-                    print(lenarr2)
+                #빈도수 바탕 주제 분석 - 형태소 분리
+                arr2 = list(personal_set["user_message"])
+                #print(arr2)
+                lenarr2 = len(arr2)
 
-                    data = ""
-                    for x in range(lenarr2):
-                        data += arr2[x]
-                        iH = isHangul(data)
-                    pprint(iH)
+                data = ""
+                for x in range(lenarr2):
+                    data += arr2[x]
+                    iH = isHangul(data)
 
-                    parses = datapaser(data) 
-                    fword,fnumber = express(parses)
-                    pointlist = []
-                    if iH:
-                        reduceword = ['뉴콘']
-                        for x in reduceword:
-                            if(fword[0] == x):
-                                pointword = '콘서트'
-                            else:
-                                pointword = fword[0]
-                                pointlist.append(pointword)
-                                pointlist.append(fnumber[0])
-                    else:
-                        pointlist.append("한글 아님")
-                        pointlist.append("None")
-                        fword.append("None")
-                    fxs = [i for i, _ in enumerate(fword)]
-                    print(pointlist)
-                    exceling()
-                    profiling()
+                parses = datapaser(data) 
+                fword,fnumber = express(parses)
+                pointlist = []
+                if iH:
+                    reduceword = ['뉴콘']
+                    for x in reduceword:
+                        if(fword[0] == x):
+                            pointword = '콘서트'
+                        else:
+                            pointword = fword[0]
+                            pointlist.append(pointword)
+                            pointlist.append(fnumber[0])
+                else:
+                    pointlist.append("한글 아님")
+                    pointlist.append("None")
+                    fword.append("None")
+                fxs = [i for i, _ in enumerate(fword)]
+                exceling()
+                #빈도수 바탕 주제 분석 - 감정 분석 밑바탕 파일
+                f = open("train_docs.txt","w",encoding='utf-8')
+                data = arr2[0]
+                pprint(arr2[0])
+                f.write(str(data))
+                f.close()
+                user_profile = profiling(text1,key_max,pointlist,iH,fword)
+                #print(user_profile)
+                user_profile.to_sql('user_analysis',conf)
+                conf.commit()
+                userset = pd.read_sql("SELECT * FROM user_analysis",conf)
+                cols = list(userset)
 
-                except Exception as ex:
-                    print("None information",ex)
-
+                #except Exception as ex:
+                #    print("None information",ex)
 
 #분석 결과
 def analy_result():
@@ -265,25 +272,30 @@ class MyFrames(Frame):
         self.master = master
         self.pack(fill=BOTH, expand=True)
 
-        #id
+        #목록
         frame1 = Frame(self)
         frame1.pack(fill=X)
-        lblId = Label(frame1, text ="아이디",width=10)
-        lblId.pack(side=LEFT,padx=10,pady=10)
-        entryId = Entry(frame1)
-        entryId.pack(fill=X, padx=10, expand=True)
+        IblLi = Label(frame1, text="사원 목록: "+str(userlist))
+        IblLi.pack()
 
-
-        #분석
+        #id
         frame2 = Frame(self)
         frame2.pack(fill=X)
-        btanaly = Button(frame2, text="분석 시작",command=lambda:interactive(entryId.get()))
+        lblId = Label(frame2, text ="분석할 아이디",width=10)
+        lblId.pack(side=LEFT,padx=10,pady=10)
+        entryId = Entry(frame2)
+        entryId.pack(fill=X, padx=10, expand=True)
+
+        #분석
+        frame3 = Frame(self)
+        frame3.pack(fill=X)
+        btanaly = Button(frame3, text="분석 시작",command=lambda:interactive(entryId.get()))
         btanaly.pack(side=RIGHT, padx=10,pady=10)
 
         #결과
-        frame3 = Frame(self)
-        frame3.pack(fill=X)
-        btnret = Button(frame3, text="분석 결과",command=analy_result)
+        frame4 = Frame(self)
+        frame4.pack(fill=X)
+        btnret = Button(frame4, text="분석 결과",command=analy_result)
         btnret.pack(side=RIGHT, padx=10, pady=10)
 
 #분석 관리 메인
@@ -316,16 +328,6 @@ def analysis_manage():
     e_but = Label(analys,text="My_Table")
     e_but.pack()
 
-
-    treelists = []
-    for x in range(len(ids)):
-        treelist = []
-        treelist.append(ids[x])
-        treelist.append(ats[x])
-        treelist.append([x])
-        treelists.append(tuple(treelist))
-    print(treelists)
-
     treeview=tkinter.ttk.Treeview(analys, columns=["one", "two","three","four"])
     treeview.column("#0", width=50)
     treeview.heading("#0",text="num") #index
@@ -337,6 +339,14 @@ def analysis_manage():
     treeview.heading("three", text=cols[2],anchor="center") #subject
     treeview.column("four", width=100, anchor="w")
     treeview.heading("four", text=cols[3], anchor="center") #emotion
+
+    treelists = []
+    for x in range(len(ids)):
+        treelist = []
+        treelist.append(ids[x])
+        treelist.append(nas[x])
+        treelist.append(ads[x])
+        treelists.append(tuple(treelist))
 
     for i in range(len(treelists)):
         treeview.insert('', 'end', text=i, values=treelists[i], iid=str(i)+"번")
