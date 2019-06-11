@@ -252,11 +252,7 @@ def interactive(text1):
                 f.write(str(data))
                 f.close()
                 user_profile = profiling(text1,key_max,pointlist,iH,fword)
-                #print(user_profile)
-                user_profile.to_sql('user_analysis',conf)
-                conf.commit()
-                userset = pd.read_sql("SELECT * FROM user_analysis",conf)
-                cols = list(userset)
+                print(user_profile)
 
                 #except Exception as ex:
                 #    print("None information",ex)
