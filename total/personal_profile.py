@@ -6,8 +6,7 @@
 
 from personal_feeling import *
 #from personal_topic import *
-
-def profiling():
+def profiling(names,key_max,pointlist,iH,fword):
 	if(emot == 'pos'):
 		emots = '긍정'
 	elif(emot == 'neg'):
@@ -25,7 +24,7 @@ def profiling():
 	user_profile["user_topic"] = pointlist[0]
 	user_profile['emotion'] = emot
 
-	pprint(user_profile)
+	#pprint(user_profile)
 	print("%s님이 매체를 주로 이용하는 시각은 %d시 입니다."%(names, key_max))
 
 	if iH:
@@ -41,3 +40,5 @@ def profiling():
 		print("관심사 is %s"%(fword[0]))
 		print("주제 성향 is %s입니다."%(emots))
 		print("Graph is None")
+
+	return user_profile
