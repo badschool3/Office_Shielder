@@ -40,7 +40,7 @@ else:
   conf = sqlite3.connect("C:/Users/"+ pathvar + "/Users.db")
   cursor = conf.cursor() 
   cursor.execute('create table user_info(id, name, address)')
-  #cursor.execute('create table user_analysis(id, active_time, subject, emotion)')
+  cursor.execute('create table user_analysis(id, active_time, subject, emotion)')
   userset = pd.read_sql("SELECT * FROM user_info",conf)
   userlist = pd.read_sql("SELECT * FROM user_info",conf)
   userlist = list(userlist["id"])
