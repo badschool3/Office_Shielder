@@ -3,19 +3,8 @@
 결과를 이 파일로 반환합니다. 이 파일은 분석 완료된 결과를 알려줍니다.
 아이디, 주요 활동시간, 관심사, 감정의 네 가지가 저장되어 있습니다."""
 
-
-from personal_feeling import *
-#from personal_topic import *
-def profiling(names,key_max,pointlist,iH,fword):
-	if(emot == 'pos'):
-		emots = '긍정'
-	elif(emot == 'neg'):
-		emots = '부정'
-	elif(emot == 'nat'):
-		emots = '중립'
-	else:
-		emots = 'None'
-
+import pandas as pd
+def profiling(names,key_max,pointlist,iH,fword,emot):
 	#크롤링 분석 완료
 	user_profile = [names]
 	user_profile = pd.DataFrame(user_profile, columns=["id"])
@@ -29,7 +18,7 @@ def profiling(names,key_max,pointlist,iH,fword):
 
 	if iH:
 		print("%s님의 관심사는 본문에서 %s번 빈도가 나타난 \"%s\"입니다."%(names, pointlist[1], fword[0]))
-		print("%s님이 주제에 대해 주로 나타내는 성향은 %s입니다."%(names, emots))
+		print("%s님이 주제에 대해 주로 나타내는 성향은 %s입니다."%(names, emot))
 		'''
 		plt.bar(fxs, fnumber)
 		plt.ylabel("단어 수")
@@ -40,5 +29,4 @@ def profiling(names,key_max,pointlist,iH,fword):
 		print("관심사 is %s"%(fword[0]))
 		print("주제 성향 is %s입니다."%(emots))
 		print("Graph is None")
-
 	return user_profile
