@@ -91,7 +91,7 @@ def express(parses):
 	return fword,fnumber
 
 	if iH:
-		reduceword = ['뉴콘']
+		reduceword = ['뉴콘','첫공','총막','피켓팅']
 		for x in reduceword:
 			if(fword[0] == x):
 				pointword = '콘서트'
