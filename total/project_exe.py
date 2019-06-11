@@ -13,7 +13,7 @@ from personal_json import *
 from personal_data import *
 from personal_topic import *
 from feeling_to_data import *
-from personal_profile import *
+import personal_profile
 
 pathvar = os.path.dirname( os.path.abspath( __file__ ) ).split('\\')[2]
 
@@ -251,6 +251,7 @@ def interactive(text1):
                 pprint(arr2[0])
                 f.write(str(data))
                 f.close()
+                main_feel()
                 user_profile = profiling(text1,key_max,pointlist,iH,fword)
 
                 analy_result(user_profile)
