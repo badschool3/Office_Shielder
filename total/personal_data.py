@@ -6,8 +6,8 @@
 from personal_json import *
 from pprint import pprint
 from collections import Counter
-import matplotlib.font_manager as fm
-import matplotlib.pyplot as plt
+#import matplotlib.font_manager as fm
+#import matplotlib.pyplot as plt
 import os
 from konlpy.tag import *
 
@@ -15,6 +15,7 @@ def f1(x):
 	return result[x]
 
 def personal_datas(names):
+	'''
 	#matplotlib 그래프 한글 깨짐 방지. 폰트 설정
 	font_fname = 'C:/Windows/Fonts/NanumGothic.ttf'
 	font_family = fm.FontProperties(fname=font_fname).get_name()
@@ -22,7 +23,7 @@ def personal_datas(names):
 	plt.rcParams['font.size'] = 20.
 	plt.rcParams['xtick.labelsize'] = 11.
 	plt.rcParams['ytick.labelsize'] = 11.
-	plt.rcParams['axes.labelsize'] = 15.
+	plt.rcParams['axes.labelsize'] = 15. '''
 
 	#개인 아이디 크롤링 결과 호출 
 	#main()
