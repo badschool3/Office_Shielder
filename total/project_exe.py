@@ -3,11 +3,10 @@ from tkinter import *
 import tkinter.ttk
 from tkinter import messagebox
 import sqlite3
-import pymysql
 import pandas as pd
 import os
 import time
-from PIL import Image
+#from PIL import Image
 
 from project_Response import *
 from personal_json import *
@@ -18,14 +17,6 @@ from personal_feeling import *
 from personal_profile import *
 
 pathvar = os.path.dirname( os.path.abspath( __file__ ) ).split('\\')[2]
-
-#데이터베이스 연결. 참고 url = https://estenpark.tistory.com/349
-'''
-db = pymysql.connect(host='106.10.36.206',port=27000,user='root',passwd='qwertyadmin',db='SPST_S',charset='utf8',autocommit=True)
-cursor = db.cursor()
-userset = pd.read_sql("SELECT * FROM user_info")
-cols = list(userset)
-print(userset) '''
 
 #데이터베이스 생성
 if os.path.isfile("C:/Users/"+ pathvar + "/Users.db"):
@@ -393,11 +384,11 @@ root.resizable(0, 0)
 x0, y0 = 820, 490
 center_window(x0, y0)
 root.title("메인 화면")
-root.iconbitmap(default=r'root.iconbitmap(default=r'C:/Users/' + pathvar + 'dsz08/Downloads/SPST_S-master.ico'))
+root.iconbitmap(default=r'C:/Users/' + pathvar + 'dsz08/Downloads/SPST_S-master.ico')
 
-image = Image.open("logo.gif") #창 크기에 맞게 이미지 크기 조절
+'''image = Image.open("logo.gif") #창 크기에 맞게 이미지 크기 조절
 resize_image = image.resize((x0,y0))
-resize_image.save('logo.gif')
+resize_image.save('logo.gif') '''
 images = PhotoImage(file = "logo.gif") #이미지 배치
 lbl = Label(root, image=images)
 lbl.pack(side="bottom",fill="both",expand="True")
