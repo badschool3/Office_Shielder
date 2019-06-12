@@ -384,7 +384,7 @@ root.resizable(0, 0)
 x0, y0 = 820, 490
 center_window(x0, y0)
 root.title("메인 화면")
-root.iconbitmap(default=r'C:/Users/' + pathvar + 'dsz08/Downloads/SPST_S-master.ico')
+root.iconbitmap(default=r'C:/Users/' + pathvar + '/Downloads/SPST_S-master/project_icon.ico')
 
 '''image = Image.open("logo.gif") #창 크기에 맞게 이미지 크기 조절
 resize_image = image.resize((x0,y0))
