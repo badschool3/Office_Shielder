@@ -17,7 +17,7 @@ from collections import Counter
 from konlpy.tag import *
 import numpy as np
 import re
-#from soynlp.tokenizer import MaxScoreTokenizer
+from soynlp.tokenizer import MaxScoreTokenizer
 from konlpy.tag import Okt
 import random
 #from PIL import Image
@@ -187,6 +187,16 @@ if __name__ == '__main__':
 """ 파일 순서 - 1 - 
 특정한 아이디에 대한 정보를 가져와(크롤링해) json 파일로 저장합니다. """
 
+
+import oauth2
+import pandas as pd
+import json
+import datetime
+import time
+from config import *
+import sqlite3
+import sys
+
 #[CODE 1]
 def oauth2_request(consumer_key, consumer_secret, access_token, access_secret):
     try:
@@ -261,6 +271,7 @@ def getTwitterTwit(tweet, jsonResult):
                     'num_likes':num_likes, 'num_loves':num_loves,
                     'num_wows':num_wows, 'num_hahas':num_hahas,
                     'num_sads':num_sads, 'num_angrys':num_angrys, 'hashtags': hashtags})
+#main
 def main(names):
     screen_name = names
     num_posts = 100
@@ -289,10 +300,20 @@ def main(names):
 가져온 파일을 기반으로 개인정보가 저장될 1차 데이터프레임을 생성하고 
 주요 활동 시간을 파악해 저장합니다. """
 
+
+from personal_json import *
+from pprint import pprint
+from collections import Counter
+#import matplotlib.font_manager as fm
+#import matplotlib.pyplot as plt
+import os
+from konlpy.tag import *
+
 def f1(x):
     return result[x]
 
 def personal_datas(names):
+
     #개인 아이디 크롤링 결과 호출 
     #main()
     with open(names+"_twitter.json",encoding='UTF-8') as json_file:
@@ -310,16 +331,23 @@ def personal_datas(names):
     
     return personal_set
 
+
 """ 파일 순서 - 3 - 
 주요 활동 시간을 정했다면 다음에 필요한 것은 해당 유저가 관심있어하는 
 관심사를 가지고 공격할 주제를 만드는 것입니다. 
 관심사는 글의 특정 단어 빈도수로 측정합니다."""
 
+
+from personal_data import *
+import numpy as np
+import re
+from soynlp.tokenizer import MaxScoreTokenizer
+
 boundmorpheme = ["은", "는", "이", "가", "을", "를", "로써", "에서", "에게서", "부터", "까지", "에게", "한테", "께", "와", "과", "의", "로서", "으로서", "로", "으로"] # 조사
 exceptions = boundmorpheme
 
-#scores = {'티켓이': 0.3, '티켓': 0.7, '좋아요': 0.2, '좋아':0.5}
-#tokenizer = MaxScoreTokenizer(scores=scores)
+scores = {'티켓이': 0.3, '티켓': 0.7, '좋아요': 0.2, '좋아':0.5}
+tokenizer = MaxScoreTokenizer(scores=scores)
 
 def isHangul(text):
     #Check the Python Version
@@ -424,7 +452,7 @@ def exceling():
     natl = []
 
     for x in range(len(data['단어'])): 
-        if(data['감정범주'][x] == '기쁨' or data['감정범주'][x] == '  흥미' or data['감정범주'][x] == '놀람'):
+        if(data['감정범주'][x] == '기쁨' or data['감정범주'][x] == ' 흥미' or data['감정범주'][x] == '놀람'):
             posl.append(data['단어'][x])
         if(data['감정범주'][x] == '혐오' or data['감정범주'][x] == '분노' or data['감정범주'][x] == '통증' or data['감정범주'][x] == '지루함' or data['감정범주'][x] == '공포'):
             navl.append(data['단어'][x])
