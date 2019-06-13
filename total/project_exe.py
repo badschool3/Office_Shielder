@@ -6,7 +6,7 @@ import sqlite3
 import pandas as pd
 import os
 import time
-#from PIL import Image
+from PIL import Image
 
 from project_Response import *
 from personal_json import *
@@ -386,9 +386,9 @@ center_window(x0, y0)
 root.title("메인 화면")
 root.iconbitmap(default=r'C:/Users/' + pathvar + '/Downloads/SPST_S-master/SPST_S-master/project_icon.ico')
 
-'''image = Image.open("logo.gif") #창 크기에 맞게 이미지 크기 조절
+image = Image.open("logo.gif") #창 크기에 맞게 이미지 크기 조절
 resize_image = image.resize((x0,y0))
-resize_image.save('logo.gif') '''
+resize_image.save('logo.gif')
 images = PhotoImage(file = "logo.gif") #이미지 배치
 lbl = Label(root, image=images)
 lbl.pack(side="bottom",fill="both",expand="True")
