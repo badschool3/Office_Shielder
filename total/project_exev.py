@@ -17,7 +17,7 @@ from collections import Counter
 from konlpy.tag import *
 import numpy as np
 import re
-from soynlp.tokenizer import MaxScoreTokenizer
+#from soynlp.tokenizer import MaxScoreTokenizer
 from konlpy.tag import Okt
 import random
 #from PIL import Image
@@ -318,8 +318,8 @@ def personal_datas(names):
 boundmorpheme = ["은", "는", "이", "가", "을", "를", "로써", "에서", "에게서", "부터", "까지", "에게", "한테", "께", "와", "과", "의", "로서", "으로서", "로", "으로"] # 조사
 exceptions = boundmorpheme
 
-scores = {'티켓이': 0.3, '티켓': 0.7, '좋아요': 0.2, '좋아':0.5}
-tokenizer = MaxScoreTokenizer(scores=scores)
+#scores = {'티켓이': 0.3, '티켓': 0.7, '좋아요': 0.2, '좋아':0.5}
+#tokenizer = MaxScoreTokenizer(scores=scores)
 
 def isHangul(text):
     #Check the Python Version
@@ -558,7 +558,41 @@ def mainfeel(f_testd):
 
     return emot
 
-"""파일 6 메인 """
+""" 파일 순서 - 6 - 
+메인 코드입니다. 이 파일을 실행하면 다른 파일들이 모두 실행되며 실행된
+결과를 이 파일로 반환합니다. 이 파일은 분석 완료된 결과를 알려줍니다.
+아이디, 주요 활동시간, 관심사, 감정의 네 가지가 저장되어 있습니다."""
+
+import pandas as pd
+def profiling(names,key_max,pointlist,iH,fword,emot):
+    #크롤링 분석 완료
+    user_profile = [names]
+    user_profile = pd.DataFrame(user_profile, columns=["id"])
+
+    user_profile["time"] = str(key_max)
+    user_profile["user_topic"] = pointlist[0]
+    user_profile['emotion'] = emot
+
+    #pprint(user_profile)
+    print("%s님이 매체를 주로 이용하는 시각은 %d시 입니다."%(names, key_max))
+
+    if iH:
+        print("%s님의 관심사는 본문에서 %s번 빈도가 나타난 \"%s\"입니다."%(names, pointlist[1], fword[0]))
+        print("%s님이 주제에 대해 주로 나타내는 성향은 %s입니다."%(names, emot))
+        '''
+        plt.bar(fxs, fnumber)
+        plt.ylabel("단어 수")
+        plt.title("단어 계산")
+        plt.xticks([i + 0.5 for i, _ in enumerate(fword)], fword, rotation = 90)
+        plt.show() '''
+    if not iH:
+        print("관심사 is %s"%(fword[0]))
+        print("주제 성향 is %s입니다."%(emots))
+        print("Graph is None")
+    return user_profile
+
+
+"""파일 7 메인 """
 pathvar = os.path.dirname( os.path.abspath( __file__ ) ).split('\\')[2]
 
 #데이터베이스 생성
