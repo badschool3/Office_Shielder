@@ -11,7 +11,7 @@
 
 ### 프로젝트 사항
 스피어 피싱이란?
-+ 2013년 필터링 기술력의 발전으로 많은 스팸 메시지들이 걸러지고 방어되면서 ++특정 한 사람을 특정하여 분석하고 집중적으로 공격++ 하는 스피어 피싱의 빈도가 3배나 증가한 바 있다.<br>
++ 2013년 필터링 기술력의 발전으로 많은 스팸 메시지들이 걸러지고 방어되면서 **특정 한 사람을 특정하여 분석하고 집중적으로 공격** 하는 스피어 피싱의 빈도가 3배나 증가한 바 있다.<br>
 
 스피어 피싱 보안 훈련 필요성
 + 기존 스팸 메일 : 모든 사람들에게 동일한 메시지와 악성 의심 링크 혹 악성 접근을 수행한다.
@@ -19,29 +19,8 @@
 + 예시 : 프로그래머에게는 버그 고칠 방법, 경찰관에게는 사고 발생 위치, 소방관에게는 화재 발생 위치를 주제로 어느 시간대, 감정이 해당 개인에 맞는 문장이 주어지면 다수를 대상으로 하는 문장보다 취약할 것이고 사내에서는 외부 공격보다 사원 하나의 실수로 인한 공격이 걸리기 쉽고 대비가 어렵다.
 
 ### 프로젝트 진행 환경
-+ <strong>사용 언어 : </strong>파이썬
-
-<h1>Anaconda</h1>
-What is .ipynb file?
-
-=> anaconda's jupyter notebook file
-
-How to load the ipynb?
-
-=> 1. install anaconda (3 ver.) : contact. https://blog.naver.com/dsz08082/221183943310 Then, install add the path anaconda
-
-=> 2. open cmd & typing "jupyter notebook"
-
-=> 3. Use the Gui! Click to Open Downded .ipynb files
-
-파이썬 : Python3.7
-
-툴 : 아나콘다 3.7
-
-참고 : https://wikidocs.net/22488
-
-라이브러리
-- time, oauth2, json, datetime, config, sqlite3, tweepy
-
-- nltk, ntlk data, KoNLpy, JPype, Tensorflow, Keras, Numpy, Scikit-learn, Juypyter Notebook, Pandas, Matplotlib, Okt
-
+사용 언어 : 파이썬 3.7 (Python3.7)
+사용 라이브러리 : 
+- 웹 크롤링 : time, oauth2, json, datetime, config, , tweepy, counter, pprint, os, sys, re, pandas
+- 데이터베이스 : sqlite3
+- 딥러닝(머신러닝) : nltk, KoNLpy, Tensorflow, Keras, Numpy, Scikit-learn, Pandas, Matplotlib
