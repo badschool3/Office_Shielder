@@ -1,7 +1,7 @@
 <h1>노는게좋아 SPST_S</h1>
-<h5>팀 : 노는게좋아</h5>
-<h5>팀원 : 황주현 | 방현우 | 이수호 | 임민섭 | 정현서</h5>
-<h5>주제 : 스피어피싱 모의훈련 서비스 (SpearPhishing simulation training_Service)</h5>
+<h5><strong>팀 : </strong>노는게좋아</h5>
+<h5><strong>팀원 : </strong>황주현 | 방현우 | 이수호 | 임민섭 | 정현서</h5>
+<h5><strong>주제 : </strong>스피어피싱 모의훈련 서비스 (SpearPhishing simulation training_Service)</h5>
 
 <h2>프로젝트 개요</h2>
 <h5>스피어 피싱이란?</h5>
