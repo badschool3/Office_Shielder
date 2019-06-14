@@ -1,8 +1,8 @@
 # 노는게좋아 SPST_S
 ### 프로젝트 조직
-<strong>팀 : </strong>노는게좋아 </h5>
-<strong>팀원 : </strong>황주현 | 방현우 | 이수호 | 임민섭 | 정현서
-<strong>주제 : </strong>스피어피싱 모의훈련 서비스 (SpearPhishing simulation training_Service)
+<strong>팀 : </strong>노는게좋아 </h5><br>
+<strong>팀원 : </strong>황주현 | 방현우 | 이수호 | 임민섭 | 정현서<br>
+<strong>주제 : </strong>스피어피싱 모의훈련 서비스 (SpearPhishing simulation training_Service)<br>
 
 ### 프로젝트 목표
 1. 머신러닝 기술을 방어가 아닌 공격에 사용할 수 있다.
