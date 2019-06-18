@@ -8,17 +8,15 @@ import sqlite3
 import platform
 import time
 
-#os.system("spst_main.exe")
+count = 0
 
-#데이터베이스 생성
+#데이터베이스 로딩
 if(platform.system()=='Windows'):
 	pathvar = os.path.dirname( os.path.abspath( __file__ ) ).split('\\')[2]
-	print ("해당 파일이 있습니다. 데이터베이스를 불러옵니다.")
 	conf = sqlite3.connect("C:/Users/"+ pathvar + "/Users.db")
 	cursor = conf.cursor()
 elif(platform.system()=='Darwin'):
 	file = "Users.db"
-	print ("해당 파일이 있습니다. 데이터베이스를 불러옵니다.")
 	conf = sqlite3.connect(file)
 	cursor = conf.cursor()
 
@@ -27,6 +25,9 @@ def my_table(self):
 
 	#결과 저장 - 추가
 def more(text1,text2,text3):
+	global count
+	flag = 0
+
 	text1 = text1.replace(" ","") #공백은 결과 저장 버튼을 눌러도 저장되지 않습니다.
 	text2 = text2.replace(" ","")
 	text3 = text3.replace(" ","")
@@ -37,6 +38,16 @@ def more(text1,text2,text3):
 		conf.commit()
 		userset = pd.read_sql("SELECT * FROM user_info",conf)
 		cols = list(userset)
+
+		treelist = []
+		treelist.append(text1)
+		treelist.append(text2)
+		treelist.append(text3)
+
+		treelists = []
+		treelists.append(tuple(treelist))
+		treeview.insert('', 'end', text=count, values=treelists[0], iid=str(count)+"번")
+		count += 1
 		complete(text1)
 	else:
 		notcomplete()
@@ -48,13 +59,15 @@ def grep(text1,text2,text3):
     text3 = text3.replace(" ","")
 
     values = [text1,text2,text3]
-    print(type(text1))
     if(len(values[0]) != 0 and len(values[1]) != 0 and len(values[2]) != 0):
         query = "DELETE FROM 'user_info' where id =" + "'" + text1 + "'" + "and name =" + "'" + text2 + "'" + "and address =" + "'" + text3 + "'"
         cursor.execute(query)
         conf.commit()
         userset = pd.read_sql("SELECT * FROM user_info",conf)
         cols = list(userset)
+        complete(text1)
+    else:
+    	notcomplete()
 
 #창 숨기기
 def back():	
@@ -161,6 +174,7 @@ treeview.heading("three", text=cols[2], anchor="center") #address
 
 for i in range(len(treelists)):
 	treeview.insert('', 'end', text=i, values=treelists[i], iid=str(i)+"번")
+	count += 1
 
 treeview.tag_bind("tag1", sequence="<<TreeviewSelect>>", callback=my_table)
 treeview.pack(side=TOP,fill=X)
