@@ -71,10 +71,10 @@ def on_closing():
 
 #메인 화면
 def center_window(width=300, height=200):
-	screen_width = root.winfo_screenwidth() 	
+	screen_width = root.winfo_screenwidth() 	# get screen width and height
 	screen_height = root.winfo_screenheight()
 
-	x = (screen_width/2) - (width/2) 	
+	x = (screen_width/2) - (width/2) 			# calculate position x and y coordinates
 	y = (screen_height/2) - (height/2)
 	root.geometry('%dx%d+%d+%d' % (width, height, x, y))
 
@@ -90,7 +90,7 @@ except:
 image = Image.open("logo.gif") 					#창 크기에 맞게 이미지 크기 조절
 resize_image = image.resize((x0,y0))
 resize_image.save('logo.gif')
-images = PhotoImage(file = "logo.gif") 				#이미지 배치
+images = PhotoImage(file = "logo.gif") 			#이미지 배치
 lbl = Label(root, image=images)
 lbl.pack(side="bottom",fill="both",expand="True")
 
