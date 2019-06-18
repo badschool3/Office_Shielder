@@ -17,10 +17,11 @@ def employee():
 	os.system("taskkill /f /im cmd.exe")
 	os.system("spst_employee.exe")
 	os.system("taskkill /f /im cmd.exe")
-	"""
-	os.system("spst_employee.exe")
-	os.system("taskkill /f /im spst_main.exe")
-	"""
+
+def analysis():
+	os.system("taskkill /f /im cmd.exe")
+	os.system("spst_analysis.exe")
+	os.system("taskkill /f /im cmd.exe")
 
 #데이터베이스 생성
 if(platform.system()=='Windows'):
@@ -70,10 +71,10 @@ def on_closing():
 
 #메인 화면
 def center_window(width=300, height=200):
-	screen_width = root.winfo_screenwidth() 	# get screen width and height
+	screen_width = root.winfo_screenwidth() 	
 	screen_height = root.winfo_screenheight()
 
-	x = (screen_width/2) - (width/2) 			# calculate position x and y coordinates
+	x = (screen_width/2) - (width/2) 	
 	y = (screen_height/2) - (height/2)
 	root.geometry('%dx%d+%d+%d' % (width, height, x, y))
 
@@ -89,14 +90,14 @@ except:
 image = Image.open("logo.gif") 					#창 크기에 맞게 이미지 크기 조절
 resize_image = image.resize((x0,y0))
 resize_image.save('logo.gif')
-images = PhotoImage(file = "logo.gif") 			#이미지 배치
+images = PhotoImage(file = "logo.gif") 				#이미지 배치
 lbl = Label(root, image=images)
 lbl.pack(side="bottom",fill="both",expand="True")
 
-btn1 = Button(root, text="사원관리",command=employee) 	#command=employee_manage
+btn1 = Button(root, text="사원관리",command=employee)
 btn1.place(x=700, y = 400)
 
-btn = Button(root, text="훈련관리")						#command=analysis_manage
+btn = Button(root, text="훈련관리", command=analysis)			
 btn.place(x=700, y = 440)
 
 Button(root, text="종   료",command=on_closing).place(x=30, y = 440) #
