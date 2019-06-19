@@ -9,6 +9,7 @@ import platform
 import time
 
 count = 0
+os.system("taskkill /f /im spst_analysis.exe")
 
 #데이터베이스 로딩
 if(platform.system()=='Windows'):
@@ -171,6 +172,8 @@ treeview.column("two", width=50)
 treeview.heading("two", text=cols[1], anchor="center") #name
 treeview.column("three", width=100, anchor="w")
 treeview.heading("three", text=cols[2], anchor="center") #address
+scroll_y = Scrollbar(emplo, orient="vertical", command=treeview.yview)
+scroll_y.pack(side="right", fill="y")
 
 for i in range(len(treelists)):
 	treeview.insert('', 'end', text=i, values=treelists[i], iid=str(i)+"번")
