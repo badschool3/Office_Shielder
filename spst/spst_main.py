@@ -84,10 +84,17 @@ x0, y0 = 820, 490
 center_window(x0, y0)
 root.title("메인 화면")
 try:
-	root.iconbitmap(default=r'C:/Users/' + pathvar + '/Downloads/SPST_S-master/project_icon.ico')
+	root.iconbitmap(default=r'C:/Users/' + pathvar + '/Downloads/SPST_S-master/SPST_S-master/project_icon.ico')
 except:
-	root.iconbitmap(default=r'project_icon.ico')
-image = Image.open("logo.gif") 					#창 크기에 맞게 이미지 크기 조절
+	try:
+		root.iconbitmap(default=r'C:/Users/' + pathvar + '/Downloads/SPST_S-master/SPST_S-master/project_icon.ico')
+	except:
+		root.iconbitmap(default=r'project_icon.ico')
+
+try:
+	image = Image.open(r'C:/Users/' + pathvar + '/Downloads/SPST_S-master/SPST_S-master/logo.gif')
+except:
+	image = Image.open("logo.gif") 					#창 크기에 맞게 이미지 크기 조절
 resize_image = image.resize((x0,y0))
 resize_image.save('logo.gif')
 images = PhotoImage(file = "logo.gif") 			#이미지 배치
