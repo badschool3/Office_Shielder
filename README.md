@@ -23,4 +23,4 @@
 사용 라이브러리 : 
 - 웹 크롤링 : time, oauth2, json, datetime, config, , tweepy, counter, pprint, os, sys, re, pandas
 - 데이터베이스 : sqlite3
-- 딥러닝(머신러닝) : nltk, KoNLpy, Tensorflow, Keras, Numpy, Scikit-learn, Pandas, Matplotlib
+- 딥러닝(머신러닝) : nltk, KoNLpy, Numpy, Scikit-learn, Matplotlib
