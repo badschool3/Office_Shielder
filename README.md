@@ -24,3 +24,8 @@
 - 웹 크롤링 : time, oauth2, json, datetime, config, , tweepy, counter, pprint, os, sys, re, pandas
 - 데이터베이스 : sqlite3
 - 딥러닝(머신러닝) : nltk, KoNLpy, Numpy, Scikit-learn, Matplotlib
+
+### 프로젝트 구동
+현재 spst 폴더의 파일들이 최종 파일<br>
+
+<pre><code>pip install </code></pre>
