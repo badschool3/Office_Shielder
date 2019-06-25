@@ -6,7 +6,6 @@ import pandas as pd
 import os
 import sqlite3
 import platform
-import time
 
 count = 0
 os.system("taskkill /f /im spst_analysis.exe")
@@ -35,40 +34,77 @@ def more(text1,text2,text3):
 
 	values = [text1,text2,text3]
 	if(len(values[0]) != 0 and len(values[1]) != 0 and len(values[2]) != 0):
-		cursor.execute("insert into user_info values (?,?,?)",values)
-		conf.commit()
 		userset = pd.read_sql("SELECT * FROM user_info",conf)
 		cols = list(userset)
+		ids = userset["id"].tolist()
+		nas = userset["name"].tolist()
+		ads = userset["address"].tolist()
 
-		treelist = []
-		treelist.append(text1)
-		treelist.append(text2)
-		treelist.append(text3)
+		print(values)
 
-		treelists = []
-		treelists.append(tuple(treelist))
-		treeview.insert('', 'end', text=count, values=treelists[0], iid=str(count)+"번")
-		count += 1
-		complete(text1)
+		print(ids,nas,ads)
+		if(values[0] not in ids):
+			print("아이디 미포함")
+			if(values[1] not in nas):
+				print("이름 미포함")
+				flag = 1
+			else:
+				print("이름 포함")
+				flag = 0
+		else:
+			print("아이디 포함")
+			flag = 0
+
+		if(flag==1):
+			cursor.execute("insert into user_info values (?,?,?)",values)
+			conf.commit()
+			userset = pd.read_sql("SELECT * FROM user_info",conf)
+			cols = list(userset)
+
+			treelist = []
+			treelist.append(text1)
+			treelist.append(text2)
+			treelist.append(text3)
+
+			treelists = []
+			treelists.append(tuple(treelist))
+			treeview.insert('', 'end', text=count, values=treelists[0], iid=str(count)+"번")
+			count += 1
+			complete(text1)
+		else:
+			notcomplete()
 	else:
 		notcomplete()
 
 #결과 저장 - 제거
 def grep(text1,text2,text3):
-    text1 = text1.replace(" ","") #공백은 결과 저장 버튼을 눌러도 저장되지 않습니다.
-    text2 = text2.replace(" ","")
-    text3 = text3.replace(" ","")
+	ncount = 0
+	text1 = text1.replace(" ","") #공백은 결과 저장 버튼을 눌러도 저장되지 않습니다.
+	text2 = text2.replace(" ","")
+	text3 = text3.replace(" ","")
 
-    values = [text1,text2,text3]
-    if(len(values[0]) != 0 and len(values[1]) != 0 and len(values[2]) != 0):
-        query = "DELETE FROM 'user_info' where id =" + "'" + text1 + "'" + "and name =" + "'" + text2 + "'" + "and address =" + "'" + text3 + "'"
-        cursor.execute(query)
-        conf.commit()
-        userset = pd.read_sql("SELECT * FROM user_info",conf)
-        cols = list(userset)
-        complete(text1)
-    else:
-    	notcomplete()
+	values = [text1,text2,text3]
+	if(len(values[0]) != 0 and len(values[1]) != 0 and len(values[2]) != 0):
+		userset = pd.read_sql("SELECT * FROM user_info",conf)
+		cols = list(userset)
+		ids = userset["id"].tolist()
+
+		for x in ids:
+			if(x == text1):
+				x = text1
+				break
+			else:
+				ncount += 1
+
+		treeview.delete(str(ncount)+"번")
+
+		query = "DELETE FROM 'user_info' where id =" + "'" + text1 + "'" + "and name =" + "'" + text2 + "'" + "and address =" + "'" + text3 + "'"
+		cursor.execute(query)
+		conf.commit()
+
+		complete(text1)
+	else:
+		notcomplete()
 
 #창 숨기기
 def back():	
@@ -183,9 +219,12 @@ treeview.tag_bind("tag1", sequence="<<TreeviewSelect>>", callback=my_table)
 treeview.pack(side=TOP,fill=X)
 
 try:
-	emplo.iconbitmap(default=r'C:/Users/' + pathvar + '/Downloads/SPST_S-master/project_icon.ico')
+	emplo.iconbitmap(default=r'C:/Users/' + pathvar + '/Downloads/SPST_S-master/SPST_S-master/project_icon.ico')
 except:
-	emplo.iconbitmap(default=r'project_icon.ico')
+	try:
+		emplo.iconbitmap(default=r'C:/Users/' + pathvar + '/Downloads/SPST_S-master/SPST_S-master/project_icon.ico')
+	except:
+		emplo.iconbitmap(default=r'project_icon.ico')
 
 app = MyFrame(emplo)
 emplo.mainloop()
