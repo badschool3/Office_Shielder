@@ -29,7 +29,8 @@
 현재 spst 폴더의 파일들이 최종 파일
 
 - 파이썬 파일 실행 모듈
-<br><pre><code>pip install </code></pre><br>
+<br>
+<pre><code>pip install </code></pre><br>
 - 파이썬 파일 exe 변환
 <br>
 [spst_main.py]
@@ -40,6 +41,6 @@
 <pre><code>pyinstaller -w -i=경로\project_icon.ico --onefile spst_analysis.py --hidden-import=pandas</code></pre>
 [spst_analy_crawl.py]
 <pre><code>pyinstaller -w -i=경로\project_icon.ico --onefile spst_analy_crawl.py --hidden-import=pandas --hidden-import=config --hidden-import=numpy --hidden-import=konlpy --hidden-import=oauth2</code></pre>
-
+<br>
 - 파이썬 변환 완료된 exe 프로그램<br>
 [Link](https://drive.google.com/open?id=1wwASb5nIrQdX_pW9t5fBvdqsYD5TWF)
