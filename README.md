@@ -27,21 +27,18 @@
 
 ### 프로젝트 구동
 현재 spst 폴더의 파일들이 최종 파일<br>
-
-- 파이썬 파일 실행 모듈
+<br>
+파이썬 파일 실행 모듈
 <pre><code>pip install </code></pre>
 <br>
-- 파이썬 파일 exe 변환
-[spst_main.py]
+파이썬 파일 exe 변환
+- [spst_main.py]
 <pre><code>pyinstaller -w -i=경로\project_icon.ico --onefile spst_main.py --hidden-import=pandas</code></pre>
-<br>
-[spst_employee.py]
+- [spst_employee.py]
 <pre><code>pyinstaller -w -i=경로\project_icon.ico --onefile spst_employee.py --hidden-import=pandas</code></pre>
-<br>
-[spst_analysis.py]
+- [spst_analysis.py]
 <pre><code>pyinstaller -w -i=경로\project_icon.ico --onefile spst_analysis.py --hidden-import=pandas</code></pre>
-<br>
-[spst_analy_crawl.py]
+- [spst_analy_crawl.py]
 <pre><code>pyinstaller -w -i=경로\project_icon.ico --onefile spst_analy_crawl.py --hidden-import=pandas --hidden-import=config --hidden-import=numpy --hidden-import=konlpy --hidden-import=oauth2</code></pre>
 
 - 파이썬 변환 완료된 exe 프로그램
