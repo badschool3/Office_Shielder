@@ -29,7 +29,7 @@
 현재 spst 폴더의 파일들이 최종 파일
 
 - 파이썬 파일 실행 모듈
-<pre><code>pip install </code></pre><br>
+<br><pre><code>pip install </code></pre><br>
 - 파이썬 파일 exe 변환
 <br>
 [spst_main.py]
