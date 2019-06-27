@@ -31,7 +31,7 @@
 파이썬 파일 실행 모듈
 <pre><code>pip install </code></pre><br>
 <br>
-파이썬 파일 exe 변환
+파이썬 파일 exe 변환<br>
 [spst_main.py]
 <pre><code>pyinstaller -w -i=경로\project_icon.ico --onefile spst_main.py --hidden-import=pandas</code></pre>
 [spst_employee.py]
