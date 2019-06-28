@@ -40,5 +40,5 @@
 <strong>spst_analy_crawl.py</strong>
 <pre><code>pyinstaller -w -i=project_icon.ico --onefile spst_analy_crawl.py --hidden-import=pandas --hidden-import=config --hidden-import=numpy --hidden-import=konlpy --hidden-import=oauth2</code></pre>
 <br>
-exe 변환 완료된 파이썬 프로그램<br>
+<strong>exe 변환 완료된 파이썬 프로그램</strong><br>
 [Link] [https://drive.google.com/open?id=1wwASb5nIrQdX_pW9t5fBvdqsYD5TWF]
