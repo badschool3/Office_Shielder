@@ -32,13 +32,13 @@
 <pre><code>pip install </code></pre><br>
 <br>
 파이썬 파일 exe 변환<br>
-** spst_main.py **
+<strong>spst_main.py</strong>
 <pre><code>pyinstaller -w -i=경로\project_icon.ico --onefile spst_main.py --hidden-import=pandas</code></pre>
-**spst_employee.py**
+<strong>spst_employee.py</strong>
 <pre><code>pyinstaller -w -i=경로\project_icon.ico --onefile spst_employee.py --hidden-import=pandas</code></pre>
-**spst_analysis.py**
+<strong>spst_analysis.py</strong>
 <pre><code>pyinstaller -w -i=경로\project_icon.ico --onefile spst_analysis.py --hidden-import=pandas</code></pre>
-**spst_analy_crawl.py**
+<strong>spst_analy_crawl.py</strong>
 <pre><code>pyinstaller -w -i=경로\project_icon.ico --onefile spst_analy_crawl.py --hidden-import=pandas --hidden-import=config --hidden-import=numpy --hidden-import=konlpy --hidden-import=oauth2</code></pre>
 <br>
 파이썬 변환 완료된 exe 프로그램<br>
