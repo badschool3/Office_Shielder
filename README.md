@@ -41,4 +41,5 @@
 <pre><code>pyinstaller -w -i=project_icon.ico --onefile spst_analy_crawl.py --hidden-import=pandas --hidden-import=config --hidden-import=numpy --hidden-import=konlpy --hidden-import=oauth2</code></pre>
 <br>
 <strong>exe 변환 완료된 파이썬 프로그램</strong><br>
+
 [링크는 젤다의전설 주인공 이름](http://zeldahagoshipda.com)
