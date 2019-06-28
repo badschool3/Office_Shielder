@@ -38,7 +38,7 @@
 <strong>spst_analysis.py</strong>
 <pre><code>pyinstaller --windowed -i=project_icon.ico --onefile spst_analysis.py --hidden-import=pandas</code></pre>
 <strong>spst_analy_crawl.py</strong>
-<pre><code>pyinstaller --windowed -i=project_icon.ico --onefile spst_analy_crawl.py --hidden-import=pandas --hidden-import=config --hidden-import=numpy --hidden-import=konlpy --hidden-import=oauth2</code></pre>
+<pre><code>pyinstaller -i=project_icon.ico --onefile spst_analy_crawl.py --hidden-import=pandas --hidden-import=config --hidden-import=numpy --hidden-import=konlpy --hidden-import=oauth2 --hidden-import=soynlp --hidden-import=sklearn.utils._cython_blas</code></pre>
 <br>
 <strong>exe 변환 완료된 파이썬 프로그램</strong><br>
 
