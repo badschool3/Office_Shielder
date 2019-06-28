@@ -42,4 +42,4 @@
 <br>
 <strong>exe 변환 완료된 파이썬 프로그램</strong><br>
 
-- [젤다](http://zeldahagoshipda.com)
+- https://drive.google.com/open?id=1wwASb5nIrQdX_pW9t5fBvdqsYD5TWF_9
