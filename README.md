@@ -42,4 +42,4 @@
 <br>
 <strong>exe 변환 완료된 파이썬 프로그램</strong><br>
 
-- [링크는 젤다의전설 주인공 이름](http://zeldahagoshipda.com)
+- [링크는 젤다의전설 주인공 이름] (http://zeldahagoshipda.com)
