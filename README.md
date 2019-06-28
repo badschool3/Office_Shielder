@@ -29,16 +29,16 @@
 <!--현재 spst 폴더의 파일들이 최종 파일--!>
 <br>
 파이썬 파일 실행 모듈
-<pre><code>pip install </code></pre><br>
+<pre><code>pip install config oauth2 pandas numpy konlpy platform </code></pre><br>
 파이썬 파일 exe 변환<br>
 <strong>spst_main.py</strong>
-<pre><code>pyinstaller -w -i=project_icon.ico --onefile spst_main.py --hidden-import=pandas</code></pre>
+<pre><code>pyinstaller --windowed -i=project_icon.ico --onefile spst_main.py --hidden-import=pandas</code></pre>
 <strong>spst_employee.py</strong>
-<pre><code>pyinstaller -w -i=project_icon.ico --onefile spst_employee.py --hidden-import=pandas</code></pre>
+<pre><code>pyinstaller --windowed -i=project_icon.ico --onefile spst_employee.py --hidden-import=pandas</code></pre>
 <strong>spst_analysis.py</strong>
-<pre><code>pyinstaller -w -i=project_icon.ico --onefile spst_analysis.py --hidden-import=pandas</code></pre>
+<pre><code>pyinstaller --windowed -i=project_icon.ico --onefile spst_analysis.py --hidden-import=pandas</code></pre>
 <strong>spst_analy_crawl.py</strong>
-<pre><code>pyinstaller -w -i=project_icon.ico --onefile spst_analy_crawl.py --hidden-import=pandas --hidden-import=config --hidden-import=numpy --hidden-import=konlpy --hidden-import=oauth2</code></pre>
+<pre><code>pyinstaller --windowed -i=project_icon.ico --onefile spst_analy_crawl.py --hidden-import=pandas --hidden-import=config --hidden-import=numpy --hidden-import=konlpy --hidden-import=oauth2</code></pre>
 <br>
 <strong>exe 변환 완료된 파이썬 프로그램</strong><br>
 
