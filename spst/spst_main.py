@@ -7,8 +7,9 @@ import pandas as pd
 import os
 import time
 import platform
-from PIL import Image
 import subprocess
+import sys
+import pymysql
 
 pathvar = os.path.dirname( os.path.abspath( __file__ ) ).split('\\')[2]
 os.system("taskkill /f /im cmd.exe")
@@ -16,49 +17,60 @@ os.system("taskkill /f /im cmd.exe")
 def employee():
 	os.system("taskkill /f /im cmd.exe")
 	os.system("spst_employee.exe")
-	os.system("taskkill /f /im cmd.exe")
+	sys.exit()
 
 def analysis():
 	os.system("taskkill /f /im cmd.exe")
 	os.system("spst_analysis.exe")
 	os.system("taskkill /f /im cmd.exe")
+	sys.exit()
 
-#데이터베이스 생성
-if(platform.system()=='Windows'):
-	pathvar = os.path.dirname( os.path.abspath( __file__ ) ).split('\\')[2]
-	if os.path.isfile("C:/Users/"+ pathvar + "/Users.db"):
-		print ("해당 파일이 있습니다. 데이터베이스를 불러옵니다.")
-		conf = sqlite3.connect("C:/Users/"+ pathvar + "/Users.db")
-		cursor = conf.cursor()
-	else:
-		print ("그런 이름의 파일은 없습니다. 새 데이터베이스를 생성합니다.")
-		conf = sqlite3.connect("C:/Users/"+ pathvar + "/Users.db")
-		cursor = conf.cursor() 
-		cursor.execute('create table user_info(id, name, address)')
-		cursor.execute('create table user_analysis(id, active_time, subject, emotion)')
-		cursor = conf.cursor()
-elif(platform.system()=='Darwin'):
-	file = "Users.db"
-	if os.path.isfile(file):
-		print ("해당 파일이 있습니다. 데이터베이스를 불러옵니다.")
-		conf = sqlite3.connect(file)
-		cursor = conf.cursor()
-	else:
-		print ("그런 이름의 파일은 없습니다. 새 데이터베이스를 생성합니다.")
-		conf = sqlite3.connect(file)
-		cursor = conf.cursor()
-		cursor.execute('create table user_info(id, name, address)')
-		cursor.execute('create table user_analysis(id, active_time, subject, emotion)')
-		cursor = conf.cursor()
+try:
+    #데이터베이스 서버 연결
+    conf = pymysql.connect(host='106.10.32.85', 
+                        user='root', 
+                        passwd='shsmsrpwhgdktjqjdlqslek!', 
+                        db='SPST_S',
+                        charset='utf8',
+                        port=3306,
+                        )
+    cursor = conf.cursor()
+except:
+	#데이터베이스 생성
+	if(platform.system()=='Windows'):
+		pathvar = os.path.dirname( os.path.abspath( __file__ ) ).split('\\')[2]
+		if os.path.isfile("C:/Users/"+ pathvar + "/SPST_S.db"):
+			print ("해당 파일이 있습니다. 데이터베이스를 불러옵니다.")
+			conf = sqlite3.connect("C:/Users/"+ pathvar + "/SPST_S.db")
+			cursor = conf.cursor()
+		else:
+			print ("그런 이름의 파일은 없습니다. 새 데이터베이스를 생성합니다.")
+			conf = sqlite3.connect("C:/Users/"+ pathvar + "/SPST_S.db")
+			cursor = conf.cursor() 
+			cursor.execute('create table USER_INFO(ID, NAME, ADDRESS)')
+			cursor.execute('create table USER_ANALYSIS(ID, ACTIVE_TIME, SUBJECT, EMOTION)')
+			cursor = conf.cursor()
+	elif(platform.system()=='Darwin'):
+		file = "SPST_S.db"
+		if os.path.isfile(file):
+			print ("해당 파일이 있습니다. 데이터베이스를 불러옵니다.")
+			conf = sqlite3.connect(file)
+			cursor = conf.cursor()
+		else:
+			print ("그런 이름의 파일은 없습니다. 새 데이터베이스를 생성합니다.")
+			conf = sqlite3.connect(file)
+			cursor = conf.cursor()
+			cursor.execute('create table USER_INFO(ID, NAME, ADDRESS)')
+			cursor.execute('create table USER_ANALYSIS(ID, ACTIVE_TIME, SUBJECT, EMOTION)')
+			cursor = conf.cursor()
 
-userset = pd.read_sql("SELECT * FROM user_info",conf)
-userlist = list(userset["id"])
+userset = pd.read_sql("SELECT * FROM USER_INFO",conf)
+userlist = list(userset["ID"])
 cols = list(userset)
-print (userset)
 
-ids = userset["id"].tolist()
-nas = userset["name"].tolist()
-ads = userset["address"].tolist()
+ids = userset["ID"].tolist()
+nas = userset["NAME"].tolist()
+ads = userset["ADDRESS"].tolist()
 
 lists = []
 for x in range(len(ids)):
@@ -91,12 +103,13 @@ except:
 	except:
 		root.iconbitmap(default=r'project_icon.ico')
 
+"""
 try:
 	image = Image.open(r'C:/Users/' + pathvar + '/Downloads/SPST_S-master/SPST_S-master/logo.gif')
 except:
 	image = Image.open("logo.gif") 					#창 크기에 맞게 이미지 크기 조절
 resize_image = image.resize((x0,y0))
-resize_image.save('logo.gif')
+resize_image.save('logo.gif')"""
 images = PhotoImage(file = "logo.gif") 			#이미지 배치
 lbl = Label(root, image=images)
 lbl.pack(side="bottom",fill="both",expand="True")
