@@ -6,19 +6,31 @@ import pandas as pd
 import os
 import sqlite3
 import platform
+import sys
+import pymysql
 
 count = 0
 os.system("taskkill /f /im spst_analysis.exe")
 
-#데이터베이스 로딩
-if(platform.system()=='Windows'):
-	pathvar = os.path.dirname( os.path.abspath( __file__ ) ).split('\\')[2]
-	conf = sqlite3.connect("C:/Users/"+ pathvar + "/Users.db")
-	cursor = conf.cursor()
-elif(platform.system()=='Darwin'):
-	file = "Users.db"
-	conf = sqlite3.connect(file)
-	cursor = conf.cursor()
+try:
+    #데이터베이스 서버 연결
+    conf = pymysql.connect(host='106.10.32.85', 
+                        user='root', 
+                        passwd='shsmsrpwhgdktjqjdlqslek!', 
+                        db='SPST_S',
+                        charset='utf8',
+                        port=3306)
+    cursor = conf.cursor()
+except:
+	#데이터베이스 로딩
+	if(platform.system()=='Windows'):
+		pathvar = os.path.dirNAME( os.path.abspath( __file__ ) ).split('\\')[2]
+		conf = sqlite3.connect("C:/Users/"+ pathvar + "/SPST_S.db")
+		cursor = conf.cursor()
+	elif(platform.system()=='Darwin'):
+		file = "SPST_S.db"
+		conf = sqlite3.connect(file)
+		cursor = conf.cursor()
 
 def my_table(self):
 	treeview.tag_configure("tag2", background="red")
@@ -34,16 +46,16 @@ def more(text1,text2,text3):
 
 	values = [text1,text2,text3]
 	if(len(values[0]) != 0 and len(values[1]) != 0 and len(values[2]) != 0):
-		userset = pd.read_sql("SELECT * FROM user_info",conf)
+		userset = pd.read_sql("SELECT * FROM USER_INFO",conf)
 		cols = list(userset)
-		ids = userset["id"].tolist()
-		nas = userset["name"].tolist()
-		ads = userset["address"].tolist()
+		IDs = userset["ID"].tolist()
+		nas = userset["NAME"].tolist()
+		ads = userset["ADDRESS"].tolist()
 
 		print(values)
 
-		print(ids,nas,ads)
-		if(values[0] not in ids):
+		print(IDs,nas,ads)
+		if(values[0] not in IDs):
 			print("아이디 미포함")
 			if(values[1] not in nas):
 				print("이름 미포함")
@@ -56,9 +68,9 @@ def more(text1,text2,text3):
 			flag = 0
 
 		if(flag==1):
-			cursor.execute("insert into user_info values (?,?,?)",values)
+			cursor.execute("insert into USER_INFO values (?,?,?)",values)
 			conf.commit()
-			userset = pd.read_sql("SELECT * FROM user_info",conf)
+			userset = pd.read_sql("SELECT * FROM USER_INFO",conf)
 			cols = list(userset)
 
 			treelist = []
@@ -85,32 +97,39 @@ def grep(text1,text2,text3):
 
 	values = [text1,text2,text3]
 	if(len(values[0]) != 0 and len(values[1]) != 0 and len(values[2]) != 0):
-		userset = pd.read_sql("SELECT * FROM user_info",conf)
-		cols = list(userset)
-		ids = userset["id"].tolist()
+		if(values[0].lower()!="all" and values[1].lower()!="all" and values[2].lower()!="all"):
+			userset = pd.read_sql("SELECT * FROM USER_INFO",conf)
+			cols = list(userset)
+			IDs = userset["ID"].tolist()
 
-		for x in ids:
-			if(x == text1):
-				x = text1
-				break
-			else:
-				ncount += 1
+			for x in IDs:
+				if(x == text1):
+					x = text1
+					break
+				else:
+					ncount += 1
 
-		treeview.delete(str(ncount)+"번")
+			treeview.delete(str(ncount)+"번")
 
-		query = "DELETE FROM 'user_info' where id =" + "'" + text1 + "'" + "and name =" + "'" + text2 + "'" + "and address =" + "'" + text3 + "'"
-		cursor.execute(query)
-		conf.commit()
+			query = "DELETE FROM 'USER_INFO' where ID =" + "'" + text1 + "'" + "and NAME =" + "'" + text2 + "'" + "and address =" + "'" + text3 + "'"
+			cursor.execute(query)
+			conf.commit()
 
-		complete(text1)
+			complete(text1)
+		else:
+			query = "DELETE FROM 'USER_INFO' where ID = "+"'"+text1+ "'" + 'or 1=1'""
+			cursor.execute(query)
+			conf.commit()
+			treeview.delete(*treeview.get_children())
 	else:
 		notcomplete()
 
-#창 숨기기
+#돌아가기
 def back():	
 	os.system("taskkill /f /im cmd.exe")
-	os.system("TASKKILL /F /IM spst_employee.exe")
+	os.system("spst_main.exe")
 	os.system("taskkill /f /im cmd.exe")
+	sys.exit()
 
 def complete(text1):
 	e_but.configure(text="My_Table - " + "changed user: "+" "+text1)
@@ -125,7 +144,7 @@ class MyFrame(Frame):
 		self.master = master
 		self.pack(fill=BOTH, expand=True)
 
-		#id
+		#ID
 		frame1 = Frame(self)
 		frame1.pack(fill=X)
 		lblId = Label(frame1, text ="아이디",width=10)
@@ -162,38 +181,38 @@ class MyFrame(Frame):
 
 		frame6 = Frame(self)
 		frame6.pack(fill=X)
-		btnhid = Button(frame6, text="돌아가기",command=back)
-		btnhid.pack(sid=LEFT, padx=10, pady=10)
+		btnhID = Button(frame6, text="돌아가기",command=back)
+		btnhID.pack(sid=LEFT, padx=10, pady=10)
 
 
 #사원 관리 메인
-global x0, y0,hides
+global x0, y0,hIDes
 emplo = Tk()
 emplo.resizable(0, 0)
 emplo.title("사원 관리")
 x0, y0 = 820, 490
-width2,height2 = x0+20,y0+30
-screen2_wid = emplo.winfo_screenwidth()
+wIDth2,height2 = x0+20,y0+30
+screen2_wID = emplo.winfo_screenwidth()
 screen2_hei = emplo.winfo_screenheight()
-x2 = ((screen2_wid/2) - (width2/2))
+x2 = ((screen2_wID/2) - (wIDth2/2))
 y2 = (screen2_hei/2) - (height2/2)
-emplo.geometry('%dx%d+%d+%d' % (width2, height2, x2, y2))
+emplo.geometry('%dx%d+%d+%d' % (wIDth2, height2, x2, y2))
 
 e_lbl = Label(emplo,text="사원 목록 테이블")
 e_lbl.pack()
 e_but = Label(emplo,text="My_Table")
 e_but.pack()
 
-userset = pd.read_sql("SELECT * FROM user_info",conf)
+userset = pd.read_sql("SELECT * FROM USER_INFO",conf)
 cols = list(userset)
-ids = userset["id"].tolist()
-nas = userset["name"].tolist()
-ads = userset["address"].tolist()
+IDs = userset["ID"].tolist()
+nas = userset["NAME"].tolist()
+ads = userset["ADDRESS"].tolist()
 
 treelists = []
-for x in range(len(ids)):
+for x in range(len(IDs)):
 	treelist = []
-	treelist.append(ids[x])
+	treelist.append(IDs[x])
 	treelist.append(nas[x])
 	treelist.append(ads[x])
 	treelists.append(tuple(treelist))
@@ -202,12 +221,12 @@ for x in range(len(ids)):
 treeview=tkinter.ttk.Treeview(emplo, columns=["one", "two","three"])
 treeview.column("#0", width=50)
 treeview.heading("#0",text="num") #index
-treeview.column("one", width=70)
-treeview.heading("one", text=cols[0]) #id
-treeview.column("two", width=50)
-treeview.heading("two", text=cols[1], anchor="center") #name
-treeview.column("three", width=100, anchor="w")
-treeview.heading("three", text=cols[2], anchor="center") #address
+treeview.column("one", width=70, anchor="center")
+treeview.heading("one", text=cols[0].lower(), anchor="center") #ID
+treeview.column("two", width=50, anchor="center")
+treeview.heading("two", text=cols[1].lower(), anchor="center") #NAME
+treeview.column("three", width=100, anchor="center")
+treeview.heading("three", text="group_name", anchor="center") #address
 scroll_y = Scrollbar(emplo, orient="vertical", command=treeview.yview)
 scroll_y.pack(side="right", fill="y")
 
