@@ -22,7 +22,7 @@
 사용 언어 : 파이썬 3.7 (Python3.7)<br>
 사용 라이브러리 : 
 - 웹 크롤링 : time, oauth2, json, datetime, config, , tweepy, counter, pprint, os, sys, re, pandas
-- 데이터베이스 : sqlite3
+- 데이터베이스 : sqlite3, pymysql(v.0.6.6)
 - 딥러닝(머신러닝) : nltk, KoNLpy, Numpy, Scikit-learn, Matplotlib
 
 ### 프로젝트 구동
