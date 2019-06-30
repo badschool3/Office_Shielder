@@ -74,21 +74,46 @@ x3 = ((screen3_wID/2) - (wIDth3/2))
 y3 = (screen3_hei/2) - (height3/2)
 analys.geometry('%dx%d+%d+%d' % (wIDth3, height3, x3, y3))
 
-userlist = pd.read_sql("SELECT * FROM USER_INFO",conf)
-userlist = list(userlist["ID"])
-
-userset = pd.read_sql("SELECT * FROM USER_ANALYSIS",conf)
-cols = list(userset)
-
-IDs = userset["ID"].tolist()
-ats = userset["ACTIVE_TIME"].tolist()
-sus = userset["SUBJECT"].tolist()
-ems = userset["EMOTION"].tolist()
-
 e_lbl = Label(analys,text="훈련 관리 테이블")
 e_lbl.pack()
 e_but = Label(analys,text="My_Table")
 e_but.pack()
+
+
+userseti = pd.read_sql("SELECT * FROM USER_INFO",conf)
+userlist = list(userseti["ID"])
+
+userseta = pd.read_sql("SELECT * FROM USER_ANALYSIS",conf)
+cols = list(userseta)
+
+ids = userseti["ID"].tolist()
+nas = userseti["NAME"].tolist()
+IDs = userseta["ID"].tolist()
+ats = userseta["ACTIVE_TIME"].tolist()
+sus = userseta["SUBJECT"].tolist()
+ems = userseta["EMOTION"].tolist()
+
+'''
+treeview=tkinter.ttk.Treeview(analys, columns=["one", "two"])
+treeview.column("#0", width=50)
+treeview.heading("#0",text="num") #index
+treeview.column("one", width=100,anchor="center")
+treeview.heading("one", text=cols[0].lower(),anchor="center") #ID
+treeview.column("two", width=50,anchor="center")
+treeview.heading("two", text="name",anchor="center") #name
+
+treelists = []
+for x in range(len(ids)):
+    treelist = []
+    treelist.append(ids[x])
+    treelist.append(nas[x])
+    treelists.append(tuple(treelist))
+
+for i in range(len(treelists)):
+    treeview.insert('', 'end', text=i, values=treelists[i], iid=str(i)+"번")
+
+treeview.tag_bind("tag1", sequence="<<TreeviewSelect>>", callback=my_table)
+treeview.pack(side="top",fill="x")'''
 
 treeview2=tkinter.ttk.Treeview(analys, columns=["one", "two","three","four"])
 treeview2.column("#0", width=50)
@@ -101,6 +126,7 @@ treeview2.column("three", width=80,anchor="center")
 treeview2.heading("three", text=cols[2].lower(),anchor="center") #subject
 treeview2.column("four", width=80, anchor="center")
 treeview2.heading("four", text=cols[3].lower(), anchor="center") #emotion
+#treeview2.height(5)
 
 treelists = []
 for x in range(len(IDs)):
