@@ -20,7 +20,7 @@ dbs = ""
 try:
     #데이터베이스 서버 연결
     conf = pymysql.connect(host='106.10.32.85', 
-                        user='root', 
+                        user='root',
                         passwd='shsmsrpwhgdktjqjdlqslek!', 
                         db='SPST_S',
                         charset='utf8',
@@ -248,8 +248,8 @@ def express(parses):
             for i in range(len(new_to_frame))]
     new_to_frame["Per"] = np.array(per2)
 
-    fword = [newcount[i][0] for i in range(len(newcount))][:30]
-    fnumber = [newcount[i][1] for i in range(len(newcount))][:30]
+    fword = [newcount[i][0] for i in range(len(newcount))]
+    fnumber = [newcount[i][1] for i in range(len(newcount))]
     fxs = [i for i, _ in enumerate(fword)]
     print(fword,per2)
     return fword,per2
@@ -380,11 +380,11 @@ def mainfeel(f_testd):
     result_neu = naive_bayes_classifier(test_output, list_neutral, ALL)
      
     if (result_pos > result_neg and result_pos > result_neu):
-        emot = '긍정'
+        emot = '1'
     elif (result_neg > result_pos and result_neg > result_neu):
-        emot = '부정'
+        emot = '0'
     else:
-        emot = '중립'
+        emot = '0.5'
 
     f_pos.close()
     f_neg.close()
@@ -481,8 +481,8 @@ def interactive(text1):
                 emot = mainfeel(f_test)
                 user_profile = profiling(text1,key_max,pointlist,iH,fword,per2,emot)
 
-                print(user_profile["id"][0],user_profile["time"][0],user_profile["user_topic"][0],user_profile["emotion"][0])
-                values = [user_profile["id"][0],user_profile["time"][0],user_profile["user_topic"][0],user_profile["emotion"][0]]
+                print(user_profile["time"][0],(int(user_profile["time"][0])*3600))
+                values = [user_profile["id"][0],str(int(user_profile["time"][0])*3600),user_profile["user_topic"][0],user_profile["emotion"][0]]
                 query = """INSERT INTO USER_ANALYSIS (ID, ACTIVE_TIME, SUBJECT, EMOTION) VALUES (%s, %s, %s, %s)"""
                 cursor.execute(query,values)
                 conf.commit()
