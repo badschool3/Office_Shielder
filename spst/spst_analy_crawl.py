@@ -15,6 +15,8 @@ from pprint import pprint
 import pymysql
 import matplotlib.pyplot as plt
 
+dbs = ""
+
 try:
     #데이터베이스 서버 연결
     conf = pymysql.connect(host='106.10.32.85', 
@@ -25,7 +27,7 @@ try:
                         port=3306,
                         )
     cursor = conf.cursor()
-
+    dbs = "mysql"
 except:
     #데이터베이스 로딩
     if(platform.system()=='Windows'):
@@ -36,7 +38,9 @@ except:
     	file = "SPST_S.db"
     	conf = sqlite3.connect(file)
     	cursor = conf.cursor()
+    dbs = "sqlite"
 
+print(dbs)
 
 """ 파일 순서 - 1 - 
 특정한 아이디에 대한 정보를 가져와(크롤링해) json 파일로 저장합니다. """
@@ -421,10 +425,8 @@ def interactive(text1):
     global user_profile
     def f1(x):
         return resultk[x]
-
     userlist = pd.read_sql("SELECT * FROM USER_INFO",conf)
-    userlist = list(userlist["id"])
-
+    userlist = list(userlist["ID"])
     text1 = text1.replace(" ","")
     if(len(text1) != 0):
         for user in userlist:
@@ -490,7 +492,6 @@ def interactive(text1):
 f = open("analysid.txt","r")
 line = f.readline()
 point = line
-print(point)
 f.close()
 
 interactive(point)
