@@ -12,16 +12,30 @@ import datetime
 import re
 import numpy as np
 from pprint import pprint
+import pymysql
+import matplotlib.pyplot as plt
 
-#데이터베이스 로딩
-if(platform.system()=='Windows'):
-	pathvar = os.path.dirname( os.path.abspath( __file__ ) ).split('\\')[2]
-	conf = sqlite3.connect("C:/Users/"+ pathvar + "/Users.db")
-	cursor = conf.cursor()
-elif(platform.system()=='Darwin'):
-	file = "Users.db"
-	conf = sqlite3.connect(file)
-	cursor = conf.cursor()
+try:
+    #데이터베이스 서버 연결
+    conf = pymysql.connect(host='106.10.32.85', 
+                        user='root', 
+                        passwd='shsmsrpwhgdktjqjdlqslek!', 
+                        db='SPST_S',
+                        charset='utf8',
+                        port=3306,
+                        )
+    cursor = conf.cursor()
+
+except:
+    #데이터베이스 로딩
+    if(platform.system()=='Windows'):
+    	pathvar = os.path.dirname( os.path.abspath( __file__ ) ).split('\\')[2]
+    	conf = sqlite3.connect("C:/Users/"+ pathvar + "/SPST_S.db")
+    	cursor = conf.cursor()
+    elif(platform.system()=='Darwin'):
+    	file = "SPST_S.db"
+    	conf = sqlite3.connect(file)
+    	cursor = conf.cursor()
 
 
 """ 파일 순서 - 1 - 
@@ -232,24 +246,10 @@ def express(parses):
 
     fword = [newcount[i][0] for i in range(len(newcount))][:30]
     fnumber = [newcount[i][1] for i in range(len(newcount))][:30]
-
-    return fword,fnumber
-
-    if iH:
-        reduceword = ['뉴콘','첫공','총막','피켓팅']
-        for x in reduceword:
-            if(fword[0] == x):
-                pointword = '콘서트'
-            else:
-                pointword = fword[0]
-        pointlist.append(pointword)
-        pointlist.append(fnumber[0])
-    else:
-        pointlist.append("한글 아님")
-        pointlist.append("None")
-        fword.append("None")
     fxs = [i for i, _ in enumerate(fword)]
-    return pointlist
+    print(fword,per2)
+    return fword,per2
+
 
 """ 파일 순서 - 4 - 
 아이디와 시간정보, 주제는 파악했습니다.
@@ -376,19 +376,11 @@ def mainfeel(f_testd):
     result_neu = naive_bayes_classifier(test_output, list_neutral, ALL)
      
     if (result_pos > result_neg and result_pos > result_neu):
-        #print('긍정')
         emot = '긍정'
     elif (result_neg > result_pos and result_neg > result_neu):
-        #print ('부정')
         emot = '부정'
     else:
-        #print ('중립')
         emot = '중립'
-     
-    '''
-    pprint(result_pos)
-    pprint(result_neg)
-    pprint(result_neu)'''
 
     f_pos.close()
     f_neg.close()
@@ -398,39 +390,39 @@ def mainfeel(f_testd):
     return emot
 
 """ 파일 6 """
-def profiling(names,key_max,pointlist,iH,fword,emot):
-	#크롤링 분석 완료
-	user_profile = [names]
-	user_profile = pd.DataFrame(user_profile, columns=["id"])
+def profiling(names,key_max,pointlist,iH,fword,per2,emot):
+    #크롤링 분석 완료
+    user_profile = [names]
+    user_profile = pd.DataFrame(user_profile, columns=["id"])
 
-	user_profile["time"] = str(key_max)
-	user_profile["user_topic"] = pointlist[0]
-	user_profile['emotion'] = emot
+    user_profile["time"] = str(key_max)
+    user_profile["user_topic"] = pointlist[0]
+    user_profile['emotion'] = emot
 
-	#pprint(user_profile)
-	print("%s님이 매체를 주로 이용하는 시각은 %d시 입니다."%(names, key_max))
+    #pprint(user_profile)
+    print("%s님이 매체를 주로 이용하는 시각은 %d시 입니다."%(names, key_max))
 
-	if iH:
-		print("%s님의 관심사는 본문에서 %s번 빈도가 나타난 \"%s\"입니다."%(names, pointlist[1], fword[0]))
-		print("%s님이 주제에 대해 주로 나타내는 성향은 %s입니다."%(names, emot))
-		'''
-		plt.bar(fxs, fnumber)
-		plt.ylabel("단어 수")
-		plt.title("단어 계산")
-		plt.xticks([i + 0.5 for i, _ in enumerate(fword)], fword, rotation = 90)
-		plt.show() '''
-	if not iH:
-		print("관심사 is %s"%(fword[0]))
-		print("주제 성향 is %s입니다."%(emots))
-		print("Graph is None")
-	return user_profile
+    if iH:
+        print("%s님의 관심사는 본문에서 %s번 빈도가 나타난 \"%s\"입니다."%(names, pointlist[1], fword[0]))
+        print("%s님이 주제에 대해 주로 나타내는 성향은 %s입니다."%(names, emot))
+        
+        plt.bar(fword,per2)
+        plt.ylabel("단어 수")
+        plt.title("단어 계산")
+        plt.xticks([i + 0.5 for i, _ in enumerate(fword)], fword, rotation = 90)
+        plt.show()
+    if not iH:
+        print("관심사 is %s"%(fword[0]))
+        print("주제 성향 is %s입니다."%(emots))
+        print("Graph is None")
+    return user_profile
 
 def interactive(text1):
     global user_profile
     def f1(x):
         return resultk[x]
 
-    userlist = pd.read_sql("SELECT * FROM user_info",conf)
+    userlist = pd.read_sql("SELECT * FROM USER_INFO",conf)
     userlist = list(userlist["id"])
 
     text1 = text1.replace(" ","")
@@ -448,7 +440,6 @@ def interactive(text1):
 
                 #빈도수 바탕 주제 분석 - 형태소 분리
                 arr2 = list(personal_set["user_message"])
-                #print(arr2)
                 lenarr2 = len(arr2)
 
                 data = ""
@@ -457,17 +448,20 @@ def interactive(text1):
                     iH = isHangul(data)
 
                 parses = datapaser(data) 
-                fword,fnumber = express(parses)
+                fword,per2 = express(parses)
                 pointlist = []
                 if iH:
-                    reduceword = ['뉴콘']
+                    reduceword = ['뉴콘','첫공','총막','피켓팅']
                     for x in reduceword:
                         if(fword[0] == x):
                             pointword = '콘서트'
+                            pointlist.append(pointword)
+                            pointlist.append(int(per2[0]))
+                            break
                         else:
                             pointword = fword[0]
                             pointlist.append(pointword)
-                            pointlist.append(fnumber[0])
+                            pointlist.append(int(per2[0]))
                 else:
                     pointlist.append("한글 아님")
                     pointlist.append("None")
@@ -483,18 +477,20 @@ def interactive(text1):
 
                 f_test = open('train_docs.txt','r',encoding='UTF-8')
                 emot = mainfeel(f_test)
-                user_profile = profiling(text1,key_max,pointlist,iH,fword,emot)
-                print(user_profile)
+                user_profile = profiling(text1,key_max,pointlist,iH,fword,per2,emot)
 
+                print(user_profile["id"][0],user_profile["time"][0],user_profile["user_topic"][0],user_profile["emotion"][0])
                 values = [user_profile["id"][0],user_profile["time"][0],user_profile["user_topic"][0],user_profile["emotion"][0]]
-                cursor.execute("insert into user_analysis values (?,?,?,?)",values)
+                query = """INSERT INTO USER_ANALYSIS (ID, ACTIVE_TIME, SUBJECT, EMOTION) VALUES (%s, %s, %s, %s)"""
+                cursor.execute(query,values)
                 conf.commit()
-                userset = pd.read_sql("SELECT * FROM user_analysis",conf)
+                userset = pd.read_sql("SELECT * FROM USER_ANALYSIS",conf)
                 cols = list(userset)
 
 f = open("analysid.txt","r")
 line = f.readline()
 point = line
+print(point)
 f.close()
 
 interactive(point)
