@@ -14,7 +14,7 @@ try:
                         passwd='shsmsrpwhgdktjqjdlqslek!', 
                         db='SPST_S',
                         charset='utf8',
-                        port=3306,
+                        port=3306
                         )
     cursor = conf.cursor()
 except:
@@ -35,6 +35,7 @@ def inter(IDs):
 	f.close()
 
 	os.system("spst_analy_crawl.exe")
+    #os.system("spst_result.exe")
 
 def my_table(self):
 	treeview.tag_configure("tag2", background="red")
