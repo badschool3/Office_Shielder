@@ -20,7 +20,8 @@ try:
                         passwd='shsmsrpwhgdktjqjdlqslek!', 
                         db='SPST_S',
                         charset='utf8',
-                        port=3306)
+                        port=3306,
+                        use_unicode=True)
     cursor = conf.cursor()
     dbs = "mysql"
 except:
@@ -34,6 +35,7 @@ except:
 		conf = sqlite3.connect(file)
 		cursor = conf.cursor()
 	dbs = "sqlite"
+cursor.execute("set names utf8")
 
 def my_table(self):
 	treeview.tag_configure("tag2", background="red")
@@ -65,6 +67,7 @@ def more(text1,text2,text3):
 
 		if(flag==1):
 			if(dbs == "mysql"):
+				print(values)
 				query = """INSERT INTO USER_INFO (ID,NAME,GROUP_NAME) VALUES (%s, %s, %s)"""
 				cursor.execute(query,values)
 			else:
