@@ -29,7 +29,7 @@
 <!--현재 spst 폴더의 파일들이 최종 파일--!>
 <br>
 파이썬 파일 실행 모듈
-<pre><code>pip install config oauth2 pandas numpy konlpy platform soynlp pymysql</code></pre><br>
+<pre><code>pip install config oauth2 pandas numpy konlpy platform soynlp pymysql pymysql</code></pre><br>
 파이썬 파일 exe 변환<br>
 <strong>spst_main.py</strong>
 <pre><code>pyinstaller --windowed -i=project_icon.ico --onefile spst_main.py --hidden-import=pandas --hidden-import=pymysql</code></pre>
