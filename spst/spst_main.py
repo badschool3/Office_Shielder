@@ -47,7 +47,7 @@ except:
 			print ("그런 이름의 파일은 없습니다. 새 데이터베이스를 생성합니다.")
 			conf = sqlite3.connect("C:/Users/"+ pathvar + "/SPST_S.db")
 			cursor = conf.cursor() 
-			cursor.execute('create table USER_INFO(ID, NAME, ADDRESS)')
+			cursor.execute('create table USER_INFO(ID, NAME, GROUP_NAME)')
 			cursor.execute('create table USER_ANALYSIS(ID, ACTIVE_TIME, SUBJECT, EMOTION)')
 			cursor = conf.cursor()
 	elif(platform.system()=='Darwin'):
@@ -60,7 +60,7 @@ except:
 			print ("그런 이름의 파일은 없습니다. 새 데이터베이스를 생성합니다.")
 			conf = sqlite3.connect(file)
 			cursor = conf.cursor()
-			cursor.execute('create table USER_INFO(ID, NAME, ADDRESS)')
+			cursor.execute('create table USER_INFO(ID, NAME, GROUP_NAME)')
 			cursor.execute('create table USER_ANALYSIS(ID, ACTIVE_TIME, SUBJECT, EMOTION)')
 			cursor = conf.cursor()
 
@@ -70,7 +70,7 @@ cols = list(userset)
 
 ids = userset["ID"].tolist()
 nas = userset["NAME"].tolist()
-ads = userset["ADDRESS"].tolist()
+ads = userset["GROUP_NAME"].tolist()
 
 lists = []
 for x in range(len(ids)):
