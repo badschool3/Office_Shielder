@@ -11,6 +11,7 @@ import pymysql
 
 count = 0
 os.system("taskkill /f /im spst_analysis.exe")
+dbs = ""
 
 try:
     #데이터베이스 서버 연결
@@ -21,16 +22,18 @@ try:
                         charset='utf8',
                         port=3306)
     cursor = conf.cursor()
+    dbs = "mysql"
 except:
 	#데이터베이스 로딩
 	if(platform.system()=='Windows'):
-		pathvar = os.path.dirNAME( os.path.abspath( __file__ ) ).split('\\')[2]
+		pathvar = os.path.dirname( os.path.abspath( __file__ ) ).split('\\')[2]
 		conf = sqlite3.connect("C:/Users/"+ pathvar + "/SPST_S.db")
 		cursor = conf.cursor()
 	elif(platform.system()=='Darwin'):
 		file = "SPST_S.db"
 		conf = sqlite3.connect(file)
 		cursor = conf.cursor()
+	dbs = "sqlite"
 
 def my_table(self):
 	treeview.tag_configure("tag2", background="red")
@@ -50,25 +53,23 @@ def more(text1,text2,text3):
 		cols = list(userset)
 		IDs = userset["ID"].tolist()
 		nas = userset["NAME"].tolist()
-		ads = userset["ADDRESS"].tolist()
-
-		print(values)
+		ads = userset["GROUP_NAME"].tolist()
 
 		print(IDs,nas,ads)
 		if(values[0] not in IDs):
 			print("아이디 미포함")
-			if(values[1] not in nas):
-				print("이름 미포함")
-				flag = 1
-			else:
-				print("이름 포함")
-				flag = 0
+			flag = 1
 		else:
 			print("아이디 포함")
 			flag = 0
 
 		if(flag==1):
-			cursor.execute("insert into USER_INFO values (?,?,?)",values)
+			if(dbs == "mysql"):
+				query = """INSERT INTO USER_INFO (ID,NAME,GROUP_NAME) VALUES (%s, %s, %s)"""
+				cursor.execute(query,values)
+			else:
+				query = "INSERT INTO USER_INFO VALUES (?,?,?)"
+				cursor.execute(query,values)
 			conf.commit()
 			userset = pd.read_sql("SELECT * FROM USER_INFO",conf)
 			cols = list(userset)
@@ -111,13 +112,13 @@ def grep(text1,text2,text3):
 
 			treeview.delete(str(ncount)+"번")
 
-			query = "DELETE FROM 'USER_INFO' where ID =" + "'" + text1 + "'" + "and NAME =" + "'" + text2 + "'" + "and address =" + "'" + text3 + "'"
-			cursor.execute(query)
+			query = "DELETE FROM USER_INFO where id = %s and name = %s and group_name = %s"
+			cursor.execute(query,values)
 			conf.commit()
 
 			complete(text1)
 		else:
-			query = "DELETE FROM 'USER_INFO' where ID = "+"'"+text1+ "'" + 'or 1=1'""
+			query = "DELETE FROM USER_INFO"
 			cursor.execute(query)
 			conf.commit()
 			treeview.delete(*treeview.get_children())
@@ -207,7 +208,7 @@ userset = pd.read_sql("SELECT * FROM USER_INFO",conf)
 cols = list(userset)
 IDs = userset["ID"].tolist()
 nas = userset["NAME"].tolist()
-ads = userset["ADDRESS"].tolist()
+ads = userset["GROUP_NAME"].tolist()
 
 treelists = []
 for x in range(len(IDs)):
