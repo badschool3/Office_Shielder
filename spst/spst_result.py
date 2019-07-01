@@ -182,10 +182,8 @@ def make_reply(text):
 if os.path.exists(dict_file):
     dic = json.load(open(dict_file, "r"))
 
-f = open("analysid.txt","r")
-line = f.readline()
-point = line
-f.close()
+myuser = pd.read_sql("SELECT * FROM PERSONAL",conf)
+point = myuser["ID"][0]
 
 if __name__ == "__main__":
 	userseta = pd.read_sql("SELECT * FROM USER_ANALYSIS where ID=" + "'" + point + "'",conf)
@@ -205,3 +203,4 @@ if __name__ == "__main__":
 	values = [point,name,new_message]
 	query = """INSERT INTO USER_RESULT (ID, NAME, SENTENCE) VALUES (%s, %s, %s)"""
 	cursor.execute(query,values)
+	conf.commit()
