@@ -29,12 +29,19 @@ except:
     	cursor = conf.cursor()
 
 def inter(IDs):
-	f = open("analysid.txt","w")
-	data = IDs
-	f.write(data)
-	f.close()
-
-	os.system("spst_analy_crawl.exe")
+    print(IDs)
+    userset = pd.read_sql("SELECT * FROM USER_INFO where id="+"'"+IDs+"'",conf)
+    print(userset)
+    try:
+        if(userset["ID"][0]==IDs):
+                query = "UPDATE PERSONAL set ID=" + "'"+ IDs + "'" 
+                cursor.execute(query)
+                conf.commit()
+                os.system("spst_analy_crawl.exe")
+        else:
+            messagebox.showinfo(":(",IDs+" is not in employee..")
+    except:
+        messagebox.showinfo(":(",IDs+" is not in employee..")
     #os.system("spst_result.exe")
 
 def my_table(self):
