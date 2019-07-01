@@ -489,9 +489,7 @@ def interactive(text1):
                 userset = pd.read_sql("SELECT * FROM USER_ANALYSIS",conf)
                 cols = list(userset)
 
-f = open("analysid.txt","r")
-line = f.readline()
-point = line
-f.close()
 
+myuser = pd.read_sql("SELECT * FROM PERSONAL",conf)
+point = myuser["ID"][0]
 interactive(point)
