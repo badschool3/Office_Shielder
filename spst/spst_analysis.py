@@ -52,21 +52,21 @@ class MyFrames(Frame):
     def __init__(self, master):
         Frame.__init__(self, master)
         self.master = master
-        self.pack(fill=BOTH, expand=True)
+        self.pack(side="left", anchor="s", expand=True)
 
         #ID
         frame1 = Frame(self)
-        frame1.pack(fill=X)
+        frame1.pack(side="left",anchor="sw")
         lblId = Label(frame1, text ="분석할 아이디",width=10)
-        lblId.pack(side=LEFT,padx=10,pady=10)
+        lblId.pack(side="left",anchor="s")
         entryId = Entry(frame1)
-        entryId.pack(fill=X, padx=10, expand=True)
+        entryId.pack(padx=10, expand=True)
 
         #훈련
         frame2 = Frame(self)
-        frame2.pack(fill=X)
+        frame2.pack(side="left",anchor="se")
         btanaly = Button(frame2, text="훈련 시작",command=lambda:inter(entryId.get()))
-        btanaly.pack(side=RIGHT, padx=10,pady=10)
+        btanaly.pack(padx=10,pady=10)
 
 
 #사원 관리 메인
@@ -74,7 +74,7 @@ global x0, y0,hIDes
 analys= Tk()
 analys.resizable(0, 0)
 analys.title("훈련관리")
-x0, y0 = 820, 490
+x0, y0 = 1200, 490
 wIDth3,height3 = x0+20,y0+30
 screen3_wID = analys.winfo_screenwidth()
 screen3_hei = analys.winfo_screenheight()
@@ -123,6 +123,10 @@ for i in range(len(treelists)):
 treeview.tag_bind("tag1", sequence="<<TreeviewSelect>>", callback=my_table)
 treeview.pack(side="top",fill="x")'''
 
+treeview1=tkinter.ttk.Treeview(analys, columns=["one"])
+treeview1.column("#0", width=50)
+treeview1.heading("#0",text="num") #index
+
 treeview2=tkinter.ttk.Treeview(analys, columns=["one", "two","three","four"])
 treeview2.column("#0", width=50)
 treeview2.heading("#0",text="num") #index
@@ -135,6 +139,11 @@ treeview2.heading("three", text=cols[2].lower(),anchor="center") #subject
 treeview2.column("four", width=80, anchor="center")
 treeview2.heading("four", text=cols[3].lower(), anchor="center") #emotion
 #treeview2.height(5)
+
+treeview3=tkinter.ttk.Treeview(analys, columns=["one"])
+treeview3.column("#0", width=50)
+treeview3.heading("#0",text="num") #index
+
 
 treelists = []
 for x in range(len(IDs)):
@@ -149,7 +158,9 @@ for i in range(len(treelists)):
     treeview2.insert('', 'end', text=i, values=treelists[i], iid=str(i)+"번")
 
 treeview2.tag_bind("tag1", sequence="<<TreeviewSelect>>", callback=my_table)
-treeview2.pack(side="top",fill="x")
+treeview1.pack(side="left", anchor="nw", padx="10")
+treeview2.pack(side="left", anchor="n", padx="10")
+treeview3.pack(side="left", anchor="ne", padx="10")
 
 try:
 	analys.iconbitmap(default='C:/Users/' + pathvar + '/Downloads/SPST_S-master/project_icon.ico')
