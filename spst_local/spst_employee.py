@@ -76,10 +76,11 @@ def more(text1,text2,text3):
 			userset = pd.read_sql("SELECT * FROM USER_INFO",conf)
 			cols = list(userset)
 
+			treeap = treelist.append
 			treelist = []
-			treelist.append(text1)
-			treelist.append(text2)
-			treelist.append(text3)
+			treeap(text1)
+			treeap(text2)
+			treeap(text3)
 
 			treelists = []
 			treelists.append(tuple(treelist))
@@ -209,12 +210,13 @@ IDs = userset["ID"].tolist()
 nas = userset["NAME"].tolist()
 ads = userset["GROUP_NAME"].tolist()
 
+treeap = treelist.append
 treelists = []
 for x in range(len(IDs)):
 	treelist = []
-	treelist.append(IDs[x])
-	treelist.append(nas[x])
-	treelist.append(ads[x])
+	treeap(IDs[x])
+	treeap(nas[x])
+	treeap(ads[x])
 	treelists.append(tuple(treelist))
 #print(treelists)
 
