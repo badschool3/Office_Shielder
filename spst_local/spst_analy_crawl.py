@@ -156,17 +156,7 @@ scores = {'티켓이': 0.3, '티켓': 0.7, '좋아요': 0.2, '좋아':0.5}
 tokenizer = MaxScoreTokenizer(scores=scores)
 
 def isHangul(text):
-    #Check the Python Version
-    pyVer3 =  sys.version_info >= (3, 0)
-
-    if pyVer3 : # for Ver 3 or later
-        encText = text
-    else: # for Ver 2.x
-        if type(text) is not unicode:
-            encText = text.decode('utf-8')
-        else:
-            encText = text
-
+    encText = text
     hanCount = len(re.findall(u'[\u3130-\u318F\uAC00-\uD7A3]+', encText))
     return hanCount > 0
 
@@ -298,16 +288,17 @@ def getting_list(filename, listname):
         if not line:
             break
     return listname
- 
+
 #naive bayes classifier + smoothing
 def naive_bayes_classifier(test, train, all_count):
     counter = 0
     list_count = []
+    lc_ap = list_count.append
     for i in test:
         for j in range(len(train)):
             if i == train[j]:
                 counter = counter + 1
-        list_count.append(counter)
+        lc_ap(counter)
         counter = 0
     list_naive = []
     for i in range(len(list_count)):
@@ -429,7 +420,8 @@ def interactive(text1):
         return resultk[x]
     userlist = pd.read_sql("SELECT * FROM USER_INFO",conf)
     userlist = list(userlist["ID"])
-    text1 = text1.replace(" ","")
+    repla_text1 = text1.replace
+    text1 = repla_text1(" ","")
     if(len(text1) != 0):
         for user in userlist:
             if(text1 == user):
