@@ -211,12 +211,11 @@ nas = userset["NAME"].tolist()
 ads = userset["GROUP_NAME"].tolist()
 
 treelists = []
-treeap = treelist.append
 for x in range(len(IDs)):
 	treelist = []
-	treeap(IDs[x])
-	treeap(nas[x])
-	treeap(ads[x])
+	treelist.append(IDs[x])
+	treelist.append(nas[x])
+	treelist.append(ads[x])
 	treelists.append(tuple(treelist))
 #print(treelists)
 
